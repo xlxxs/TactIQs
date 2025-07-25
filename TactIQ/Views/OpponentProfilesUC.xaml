@@ -1,0 +1,80 @@
+﻿<UserControl x:Class="TactIQ.Views.OpponentProfilesUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Height="420" Width="770">
+    <Border BorderBrush="#ccc" BorderThickness="1" CornerRadius="6" Padding="10">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2.5*" />
+                <ColumnDefinition Width="3.5*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Linke Liste -->
+            <Border BorderBrush="#bbb" BorderThickness="1" CornerRadius="4" Margin="0,0,10,0">
+                <ListBox x:Name="ProfileList"
+                         FontWeight="SemiBold"
+                         FontSize="14"
+                         BorderThickness="0"
+                         SelectedIndex="2">
+                    <ListBoxItem Content="Max Mustermann"/>
+                    <ListBoxItem Content="Maxi Musterfrau"/>
+                    <ListBoxItem Content="Thomas Müller"/>
+                    <ListBoxItem Content="Klaus Meier"/>
+                </ListBox>
+            </Border>
+
+            <!-- Rechte Seite -->
+            <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Height="398" >
+
+                <!-- Suchfeld -->
+                <StackPanel Orientation="Horizontal" >
+                    <Grid>
+                        <TextBox Width="393" Height="28" 
+                             Padding="4" FontSize="13" x:Name="SearchTermTextBox"/>
+                        <TextBlock IsHitTestVisible="False" Text="Gegner suchen" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="DarkGray">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text, ElementName=SearchTermTextBox}" Value="">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
+                    <Button Width="28" Height="28" Content="🔍"
+                            Background="#e0e0e0" BorderBrush="#ccc" BorderThickness="1"
+                            ToolTip="Suche starten"/>
+                </StackPanel>
+                <ComboBox Width="425" Height="30" FontSize="13" Margin="0,29,0,0">
+                    <ComboBoxItem Content="Kategorie 1" IsSelected="True"/>
+                    <ComboBoxItem Content="Kategorie 2"/>
+                    <ComboBoxItem Content="Kategorie 3"/>
+                </ComboBox>
+
+                <!-- Nur markierte Profile -->
+                <CheckBox Content="nur markierte Profile"
+                          FontSize="13" VerticalAlignment="Center" Margin="0,30,0,0"/>
+
+                <!-- Kategorie Dropdown -->
+
+                <!-- Neues Profil Button -->
+                <Button Width="422" Height="40"
+                        Background="#3A8DFF"
+                        Foreground="White"
+                        BorderBrush="#3A8DFF"
+                        FontWeight="Bold"
+                        FontSize="14"
+                        Cursor="Hand"
+                        HorizontalAlignment="Left" Margin="0,220,0,0">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock Text="+" FontSize="18" VerticalAlignment="Center"/>
+                        <TextBlock Text="Neues Profil" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

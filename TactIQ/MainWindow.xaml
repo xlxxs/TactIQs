@@ -3,10 +3,45 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TactIQ"
+        xmlns:local="clr-namespace:TactIQ.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="500" Width="1000">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
+        <!-- SIDEBAR -->
+        <Border x:Name="Sidebar" Width="60" Background="#2C3E50" MouseEnter="Sidebar_MouseEnter" MouseLeave="Sidebar_MouseLeave">
+            <StackPanel>
+                <!-- Navigation Buttons -->
+                <Button Tag="Gegner" Click="NavButton_Click" Style="{StaticResource NavButtonStyle}" Margin="5">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="🏆" FontSize="16" Margin="5,0"/>
+                        <TextBlock x:Name="Label_Gegner" Text="Gegnerprofile" Foreground="White" Margin="10,0" Visibility="Collapsed"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Tag="Anylyse" Click="NavButton_Click" Style="{StaticResource NavButtonStyle}" Margin="5">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="📈" FontSize="16" Margin="5,0"/>
+                        <TextBlock x:Name="Label_Analyse" Text="Analyse" Foreground="White" Margin="10,0" Visibility="Collapsed"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Tag="Export" Click="NavButton_Click" Style="{StaticResource NavButtonStyle}" Margin="5">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="📤" FontSize="16" Margin="5,0"/>
+                        <TextBlock x:Name="Label_Export" Text="Export" Foreground="White" Margin="10,0" Visibility="Collapsed"/>
+                    </StackPanel>
+                </Button>            
+            </StackPanel>
+        </Border>
+
+        <!-- MAIN CONTENT -->
+        <ContentControl x:Name="MainContent" Grid.Column="1"/>
     </Grid>
 </Window>
+    
+
