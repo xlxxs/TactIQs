@@ -6,38 +6,64 @@
         xmlns:local="clr-namespace:TactIQ.Views"
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="1000">
+    <Window.Resources>
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+</Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <!-- SIDEBAR -->
-        <Border x:Name="Sidebar" Width="60" Background="#2C3E50" MouseEnter="Sidebar_MouseEnter" MouseLeave="Sidebar_MouseLeave">
-            <StackPanel>
-                <!-- Navigation Buttons -->
-                <Button Tag="Gegner" Click="NavButton_Click" Style="{StaticResource NavButtonStyle}" Margin="5">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="🏆" FontSize="16" Margin="5,0"/>
-                        <TextBlock x:Name="Label_Gegner" Text="Gegnerprofile" Foreground="White" Margin="10,0" Visibility="Collapsed"/>
-                    </StackPanel>
-                </Button>
+        <Border x:Name="Sidebar" Width="60" Background="#2C3E50" >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>  
+                    <RowDefinition Height="*"/>     
+                    <RowDefinition Height="Auto"/>  
+                </Grid.RowDefinitions>
 
-                <Button Tag="Anylyse" Click="NavButton_Click" Style="{StaticResource NavButtonStyle}" Margin="5">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="📈" FontSize="16" Margin="5,0"/>
-                        <TextBlock x:Name="Label_Analyse" Text="Analyse" Foreground="White" Margin="10,0" Visibility="Collapsed"/>
-                    </StackPanel>
-                </Button>
+                <StackPanel Grid.Row="0">
+                    <Button Tag="Gegner" Click="NavButton_Click" Style="{StaticResource NavButtonStyle}" Margin="5">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🏆" FontSize="16" Margin="5,0"/>
+                            <TextBlock x:Name="Label_Gegner" Text="Gegnerprofile" Foreground="White" Margin="10,0" Visibility="Collapsed"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Tag="Anylyse" Click="NavButton_Click" Style="{StaticResource NavButtonStyle}" Margin="5">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📈" FontSize="16" Margin="5,0"/>
+                            <TextBlock x:Name="Label_Analyse" Text="Analyse" Foreground="White" Margin="10,0" Visibility="Collapsed"/>
+                        </StackPanel>
+                    </Button>
 
-                <Button Tag="Export" Click="NavButton_Click" Style="{StaticResource NavButtonStyle}" Margin="5">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="📤" FontSize="16" Margin="5,0"/>
-                        <TextBlock x:Name="Label_Export" Text="Export" Foreground="White" Margin="10,0" Visibility="Collapsed"/>
-                    </StackPanel>
-                </Button>            
-            </StackPanel>
+                    <Button Tag="Export" Click="NavButton_Click" Style="{StaticResource NavButtonStyle}" Margin="5">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📤" FontSize="16" Margin="5,0"/>
+                            <TextBlock x:Name="Label_Export" Text="Export" Foreground="White" Margin="10,0" Visibility="Collapsed"/>
+                        </StackPanel>
+                    </Button>   
+                </StackPanel>
+
+                <StackPanel Grid.Row="2" HorizontalAlignment="Center">
+                    <Button Tag="Expand" Click="NavButton_Click" Style="{StaticResource NavButtonStyle}" 
+                            Visibility= "{Binding isSidebarCollapsed, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="▶️" FontSize="16" Margin="5,0"/>
+                            <TextBlock x:Name="Label_Expand" Text=">" Foreground="White" Margin="10,0" Visibility="Collapsed"/>
+                        </StackPanel>
+                    </Button>  
+                    <Button Tag="Reduce" Click="NavButton_Click" Style="{StaticResource NavButtonStyle}" 
+                            Visibility= "{Binding isSidebarExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="◀️" FontSize="16" Margin="5,0" Cursor="Hand"/>
+                            <TextBlock x:Name="Label_Reduce" Text="Reduce" Foreground="White" Margin="10,0" Visibility="Collapsed"/>
+                        </StackPanel>
+                    </Button> 
+                </StackPanel>
+            </Grid>
         </Border>
+
 
         <!-- MAIN CONTENT -->
         <ContentControl x:Name="MainContent" Grid.Column="1"/>

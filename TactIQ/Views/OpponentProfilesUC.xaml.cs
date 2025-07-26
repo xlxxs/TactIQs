@@ -24,5 +24,22 @@ namespace TactIQ.Views
         {
             InitializeComponent();
         }
+
+        private void ProfileList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (ProfileList.SelectedItem is ListBoxItem item)
+            {
+                string selectedName = item.Content.ToString();
+
+                var editUC = new ProfileEditUC();
+
+                editUC.tb_OpponentName.Text = "Gegnerprofil " + selectedName; 
+
+                if (Window.GetWindow(this) is MainWindow main)
+                {
+                    main.MainContent.Content = editUC;
+                }
+            }
+        }
     }
 }

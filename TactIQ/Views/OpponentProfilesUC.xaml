@@ -12,6 +12,7 @@
             <!-- Linke Liste -->
             <Border BorderBrush="#bbb" BorderThickness="1" CornerRadius="4" Margin="0,0,10,0">
                 <ListBox x:Name="ProfileList"
+                         MouseDoubleClick="ProfileList_MouseDoubleClick"
                          FontWeight="SemiBold"
                          FontSize="14"
                          BorderThickness="0"
@@ -48,6 +49,8 @@
                             Background="#e0e0e0" BorderBrush="#ccc" BorderThickness="1"
                             ToolTip="Suche starten"/>
                 </StackPanel>
+                
+                <!-- Kategorie Dropdown -->
                 <ComboBox Width="425" Height="30" FontSize="13" Margin="0,29,0,0">
                     <ComboBoxItem Content="Kategorie 1" IsSelected="True"/>
                     <ComboBoxItem Content="Kategorie 2"/>
@@ -58,11 +61,9 @@
                 <CheckBox Content="nur markierte Profile"
                           FontSize="13" VerticalAlignment="Center" Margin="0,30,0,0"/>
 
-                <!-- Kategorie Dropdown -->
-
                 <!-- Neues Profil Button -->
                 <Button Width="422" Height="40"
-                        Background="#3A8DFF"
+                        Background="#2C3E50"
                         Foreground="White"
                         BorderBrush="#3A8DFF"
                         FontWeight="Bold"
