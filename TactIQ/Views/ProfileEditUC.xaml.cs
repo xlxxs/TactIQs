@@ -24,5 +24,27 @@ namespace TactIQ.Views
         {
             InitializeComponent();
         }
+
+        private void NewMatch_Click(object sender, RoutedEventArgs e)
+        {
+            var popup = new NewMatchWindow();
+            popup.Owner = Window.GetWindow(this);
+            if (popup.ShowDialog() == true)
+            {
+                var match = popup.NewMatch;
+                MatchDataGrid.Items.Add(match);
+            }
+        }
+
+        private void NewNote_Click(object sender, RoutedEventArgs e)
+        {
+            var popup = new NewNoteWindow();
+            popup.Owner = Window.GetWindow(this);
+            if (popup.ShowDialog() == true)
+            {
+                var note = popup.NewNote;
+                NotesDataGrid.Items.Add(note);
+            }
+        }
     }
 }

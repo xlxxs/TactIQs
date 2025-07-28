@@ -25,6 +25,7 @@
                             <DataGrid AutoGenerateColumns="False" Margin="0,20,0,0" Height="150">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Datum" Binding="{Binding Date}" />
+                                    <DataGridTextColumn Header="Wettkampf" Binding="{Binding Competition}" />
                                     <DataGridTextColumn Header="Ergebnis" Binding="{Binding Result}" />
                                 </DataGrid.Columns>
                             </DataGrid>
@@ -32,8 +33,60 @@
                     </TabItem>
 
                     <TabItem Header="Matches">
+                        <Grid Margin="0,10,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <DataGrid Grid.Row="0" AutoGenerateColumns="False" HeadersVisibility="Column"
+                                      CanUserAddRows="False" Margin="0,0,0,10" SelectionMode="Single" 
+                                      SelectedIndex="1" Name="MatchDataGrid">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Datum" Binding="{Binding Date}" Width="*" />
+                                    <DataGridCheckBoxColumn Header="Sieg?" Binding="{Binding IsWin}" Width="*" />
+                                    <DataGridTextColumn Header="Ergebnis" Binding="{Binding Result}" Width="*" />
+                                    <DataGridTextColumn Header="Wettkampf" Binding="{Binding Competition}" Width="*" />
+                                    <DataGridTextColumn Header="Bemerkungen" Binding="{Binding Notes}" Width="*" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <Button Grid.Row="1" Content="+ Neues Match" HorizontalAlignment="Center" 
+                                    Background="#2C3E50" Foreground="White" FontWeight="Bold" 
+                                    Padding="10,5" Margin="0,10,0,0" Width="200" BorderBrush="#3B82F6"
+                                    BorderThickness="1" Click="NewMatch_Click"/>
+                        </Grid>
                     </TabItem>
                     <TabItem Header="Notizen">
+                        <Grid Margin="0,10,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <DataGrid Grid.Row="0" AutoGenerateColumns="False" HeadersVisibility="Column"
+                                      CanUserAddRows="False" Margin="0,0,0,10" SelectionMode="Single"
+                                      SelectedIndex="1" Name="NotesDataGrid">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Notiz" Binding="{Binding Text}" Width="2*" />
+
+                                    <DataGridTemplateColumn Header="Typ" Width="Auto">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding IsValid}" HorizontalAlignment="Center"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+
+                                    <DataGridTextColumn Header="Kategorie" Binding="{Binding Type}" Width="*" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <Button Grid.Row="1" Content="+ Neue Notiz" HorizontalAlignment="Center"
+                                    Background="#2C3E50" Foreground="White" FontWeight="Bold"
+                                    Padding="10,5" Margin="0,10,0,0" Width="200" BorderBrush="#3B82F6"
+                                    BorderThickness="1" Click="NewNote_Click"/>
+                        </Grid>
                     </TabItem>
                 </TabControl>
             </StackPanel>
