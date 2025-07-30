@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace TactIQ.Model
 {
-    class Opponent
+    public class Opponent
     {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Club { get; set; }
+        public bool Marked { get; set; }
     }
 }

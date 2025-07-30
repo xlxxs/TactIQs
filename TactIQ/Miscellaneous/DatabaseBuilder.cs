@@ -44,6 +44,7 @@ namespace TactIQ.Miscellaneous
             CREATE TABLE IF NOT EXISTS Opponent (
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
                 Name TEXT NOT NULL,
+                Club TEXT NOT NULL,
                 Marked BOOLEAN DEFAULT 0
             );";
             new SQLiteCommand(sql, conn).ExecuteNonQuery();

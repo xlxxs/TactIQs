@@ -9,7 +9,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TactIQ.Miscellaneous;
+using TactIQ.Services;
+using TactIQ.ViewModels;
 using TactIQ.Views;
+using NavigationService = TactIQ.Services.NavigationService;
 
 namespace TactIQ
 {
@@ -34,13 +38,26 @@ namespace TactIQ
         }
 
         public bool isSidebarCollapsed => !isSidebarExpanded;
+        private readonly MainViewModel _mainVM;
+
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = this;
-            LoadPage("Gegner");
 
+            // DB sicherstellen
+            DatabaseBuilder.Initialize();
+
+            // VM + Services zusammensetzen
+            _mainVM = new MainViewModel();
+            DataContext = _mainVM;
+
+            var repo = new SqliteOpponentRepository();
+            var nav = new NavigationService(vm => _mainVM.CurrentViewModel = vm);
+
+            // Startseite: Gegnerliste
+            _mainVM.CurrentViewModel = new OpponentProfilesViewModel(nav, repo);
         }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string name)

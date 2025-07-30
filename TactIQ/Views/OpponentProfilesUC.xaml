@@ -12,27 +12,23 @@
             <!-- Linke Liste -->
             <Border BorderBrush="#bbb" BorderThickness="1" CornerRadius="4" Margin="0,0,10,0">
                 <ListBox x:Name="ProfileList"
+                         ItemsSource="{Binding Opponents}"    
+                         SelectedItem="{Binding SelectedOpponent, Mode=TwoWay}"
+                         DisplayMemberPath="Name"
                          MouseDoubleClick="ProfileList_MouseDoubleClick"
                          FontWeight="SemiBold"
                          FontSize="14"
-                         BorderThickness="0"
-                         SelectedIndex="2">
-                    <ListBoxItem Content="Max Mustermann"/>
-                    <ListBoxItem Content="Maxi Musterfrau"/>
-                    <ListBoxItem Content="Thomas Müller"/>
-                    <ListBoxItem Content="Klaus Meier"/>
-                </ListBox>
+                         BorderThickness="0"/>
             </Border>
 
             <!-- Rechte Seite -->
-            <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Height="398" >
-
-                <!-- Suchfeld -->
-                <StackPanel Orientation="Horizontal" >
+            <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Height="398">
+                <!-- Suchfeld (optional noch ohne VM-Property) -->
+                <StackPanel Orientation="Horizontal">
                     <Grid>
-                        <TextBox Width="393" Height="28" 
-                             Padding="4" FontSize="13" x:Name="SearchTermTextBox"/>
-                        <TextBlock IsHitTestVisible="False" Text="Gegner suchen" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="DarkGray">
+                        <TextBox Width="393" Height="28" Padding="4" FontSize="13" x:Name="SearchTermTextBox"/>
+                        <TextBlock IsHitTestVisible="False" Text="Gegner suchen"
+                                   VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="DarkGray">
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -49,8 +45,8 @@
                             Background="#e0e0e0" BorderBrush="#ccc" BorderThickness="1"
                             ToolTip="Suche starten"/>
                 </StackPanel>
-                
-                <!-- Kategorie Dropdown -->
+
+                <!-- Kategorie Dropdown (Platzhalter) -->
                 <ComboBox Width="425" Height="30" FontSize="13" Margin="0,29,0,0">
                     <ComboBoxItem Content="Kategorie 1" IsSelected="True"/>
                     <ComboBoxItem Content="Kategorie 2"/>
@@ -58,8 +54,7 @@
                 </ComboBox>
 
                 <!-- Nur markierte Profile -->
-                <CheckBox Content="nur markierte Profile"
-                          FontSize="13" VerticalAlignment="Center" Margin="0,30,0,0"/>
+                <CheckBox Content="nur markierte Profile" FontSize="13" VerticalAlignment="Center" Margin="0,30,0,0"/>
 
                 <!-- Neues Profil Button -->
                 <Button Width="422" Height="40"
@@ -69,7 +64,9 @@
                         FontWeight="Bold"
                         FontSize="14"
                         Cursor="Hand"
-                        HorizontalAlignment="Left" Margin="0,220,0,0">
+                        HorizontalAlignment="Left" Margin="0,220,0,0"
+                        Command="{Binding AddOpponentCommand}"
+                        CommandParameter="Neues Profil">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <TextBlock Text="+" FontSize="18" VerticalAlignment="Center"/>
                         <TextBlock Text="Neues Profil" VerticalAlignment="Center"/>
