@@ -17,7 +17,7 @@ namespace TactIQ.Miscellaneous
         {
             IEnumerable<Model.Opponent> GetAll();
             Model.Opponent? GetById(int id);
-            int Add(string name);
+            int Add(string name, string club);
             void Update(Model.Opponent opponent);
             void Delete(int id);
         }

@@ -12,13 +12,51 @@ namespace TactIQ.ViewModels
         private readonly INavigationService _nav;
         private readonly IOpponentRepository _repo;
 
-        public ObservableCollection<Opponent> Opponents { get; } = new();
+        public ObservableCollection<Opponent> AllOpponents { get; } = new();
+        public ObservableCollection<Opponent> FilteredOpponents { get; } = new();
+
+        private string _searchTerm = "";
+        public string SearchTerm
+        {
+            get => _searchTerm;
+            set
+            {
+                if (_searchTerm != value)
+                {
+                    _searchTerm = value;
+                    OnPropertyChanged();
+                    ApplyFilter();
+                }
+            }
+        }
+
+        private bool _onlyMarked;
+        public bool OnlyMarked
+        {
+            get => _onlyMarked;
+            set
+            {
+                if (_onlyMarked != value)
+                {
+                    _onlyMarked = value;
+                    OnPropertyChanged();
+                    ApplyFilter();
+                }
+            }
+        }
 
         private Opponent? _selectedOpponent;
         public Opponent? SelectedOpponent
         {
             get => _selectedOpponent;
-            set { if (_selectedOpponent != value) { _selectedOpponent = value; OnPropertyChanged(); } }
+            set
+            {
+                if (_selectedOpponent != value)
+                {
+                    _selectedOpponent = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public ICommand LoadOpponentsCommand { get; }
@@ -41,15 +79,36 @@ namespace TactIQ.ViewModels
 
         public void LoadOpponents()
         {
-            Opponents.Clear();
+            AllOpponents.Clear();
             foreach (var o in _repo.GetAll())
-                Opponents.Add(o);
+                AllOpponents.Add(o);
+
+            ApplyFilter();
+        }
+
+        public void ApplyFilter()
+        {
+            FilteredOpponents.Clear();
+
+            var filtered = AllOpponents.AsEnumerable();
+
+            if (!string.IsNullOrWhiteSpace(SearchTerm))
+                filtered = filtered.Where(o => o.Name.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase));
+
+            if (OnlyMarked)
+                filtered = filtered.Where(o => o.Marked);
+
+            foreach (var o in filtered)
+                FilteredOpponents.Add(o);
         }
 
         public void AddOpponent(string? name)
         {
             if (string.IsNullOrWhiteSpace(name)) return;
-            _repo.Add(name);
+
+            var vm = new ProfileEditViewModel(_nav, _repo, new Opponent { Name = name });
+            _nav.NavigateTo(vm);
+
             LoadOpponents();
         }
 
@@ -63,14 +122,18 @@ namespace TactIQ.ViewModels
         private void OpenSelected()
         {
             if (SelectedOpponent == null) return;
-            var vm = new ProfileEditViewModel(_repo, SelectedOpponent);
+            var vm = new ProfileEditViewModel(_nav, _repo, SelectedOpponent);
             _nav.NavigateTo(vm);
+
+            SelectedOpponent = null;
+            CommandManager.InvalidateRequerySuggested();
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string? name = null)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
+
 
     public class RelayCommand : ICommand
     {

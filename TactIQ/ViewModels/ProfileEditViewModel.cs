@@ -10,6 +10,7 @@ namespace TactIQ.ViewModels
     public class ProfileEditViewModel : INotifyPropertyChanged
     {
         private readonly IOpponentRepository _repo;
+        private readonly INavigationService _nav;
 
         public int Id { get; }
         private string _name;
@@ -24,9 +25,10 @@ namespace TactIQ.ViewModels
 
         public ICommand SaveCommand { get; }
 
-        public ProfileEditViewModel(IOpponentRepository repo, Opponent opponent)
+        public ProfileEditViewModel(INavigationService nav,IOpponentRepository repo, Opponent opponent)
         {
             _repo = repo;
+            _nav = nav;
             Id = opponent.Id;
             _name = opponent.Name;
             _marked = opponent.Marked;
@@ -37,7 +39,16 @@ namespace TactIQ.ViewModels
 
         private void Save()
         {
-            _repo.Update(new Opponent { Id = Id, Name = Name, Marked = Marked, Club = "" });
+            if (Id == 0 || _repo.GetById(Id) == null)
+            {
+                _repo.Add(Name, Club);
+            }
+            else
+            {
+                _repo.Update(new Opponent { Id = Id, Club = Club, Marked = Marked, Name = Name});
+            }
+
+            _nav.NavigateTo(new OpponentProfilesViewModel(_nav, _repo));
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

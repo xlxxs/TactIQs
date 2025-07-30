@@ -11,14 +11,37 @@
 
             <!-- Linke Liste -->
             <Border BorderBrush="#bbb" BorderThickness="1" CornerRadius="4" Margin="0,0,10,0">
-                <ListBox x:Name="ProfileList"
-                         ItemsSource="{Binding Opponents}"    
-                         SelectedItem="{Binding SelectedOpponent, Mode=TwoWay}"
-                         DisplayMemberPath="Name"
-                         MouseDoubleClick="ProfileList_MouseDoubleClick"
-                         FontWeight="SemiBold"
-                         FontSize="14"
-                         BorderThickness="0"/>
+            <ListBox x:Name="ProfileList"
+                     ItemsSource="{Binding FilteredOpponents}"
+                     SelectedItem="{Binding SelectedOpponent, Mode=TwoWay}"
+                     FontWeight="SemiBold"
+                     FontSize="14"
+                     MouseDoubleClick="ProfileList_MouseDoubleClick"
+                     BorderThickness="0">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <DockPanel Margin="4">
+                            <!-- Löschen-Button rechts -->
+                            <Button Content="❌"
+                                    DockPanel.Dock="Right"
+                                    Margin="5,0,0,0"
+                                    Width="25"
+                                    Height="25"
+                                    Background="#FFECECEC"
+                                    BorderBrush="DarkGray"
+                                    BorderThickness="1"
+                                    Padding="0"
+                                    ToolTip="Gegner löschen"
+                                    Command="{Binding DataContext.DeleteOpponentCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}" />
+
+                            <!-- Gegner-Name -->
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+                        </DockPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
             </Border>
 
             <!-- Rechte Seite -->
@@ -26,7 +49,8 @@
                 <!-- Suchfeld (optional noch ohne VM-Property) -->
                 <StackPanel Orientation="Horizontal">
                     <Grid>
-                        <TextBox Width="393" Height="28" Padding="4" FontSize="13" x:Name="SearchTermTextBox"/>
+                        <TextBox Width="393" Height="28" Padding="4" FontSize="13"
+                                 Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}" />
                         <TextBlock IsHitTestVisible="False" Text="Gegner suchen"
                                    VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="DarkGray">
                             <TextBlock.Style>
@@ -54,8 +78,10 @@
                 </ComboBox>
 
                 <!-- Nur markierte Profile -->
-                <CheckBox Content="nur markierte Profile" FontSize="13" VerticalAlignment="Center" Margin="0,30,0,0"/>
-
+                <CheckBox Content="nur markierte Profile" FontSize="13"
+                          VerticalAlignment="Center" Margin="0,30,0,0"
+                          IsChecked="{Binding OnlyMarked}" />
+                
                 <!-- Neues Profil Button -->
                 <Button Width="422" Height="40"
                         Background="#2C3E50"

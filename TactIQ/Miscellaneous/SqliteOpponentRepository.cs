@@ -22,7 +22,7 @@ namespace TactIQ.Services
                     Id = r.GetInt32(0),
                     Name = r.GetString(1),
                     Club = r.IsDBNull(2) ? "" : r.GetString(2),
-                    Marked = Convert.ToBoolean(r.GetString(3))
+                    Marked = r.GetBoolean(3)
                 });
             }
             return list;
@@ -48,12 +48,13 @@ namespace TactIQ.Services
             return null;
         }
 
-        public int Add(string name)
+        public int Add(string name, string club)
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
             conn.Open();
-            using var cmd = new SQLiteCommand("INSERT INTO Opponent (Name) VALUES (@name); SELECT last_insert_rowid();", conn);
+            using var cmd = new SQLiteCommand("INSERT INTO Opponent (Name, Club, Marked) VALUES (@name, @club, false); SELECT last_insert_rowid();", conn);
             cmd.Parameters.AddWithValue("@name", name);
+            cmd.Parameters.AddWithValue("@club", club);
             return (int)(long)cmd.ExecuteScalar()!;
         }
 

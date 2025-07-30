@@ -40,6 +40,9 @@ namespace TactIQ
         public bool isSidebarCollapsed => !isSidebarExpanded;
         private readonly MainViewModel _mainVM;
 
+        SqliteOpponentRepository repo;
+        NavigationService nav;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -51,8 +54,8 @@ namespace TactIQ
             _mainVM = new MainViewModel();
             DataContext = _mainVM;
 
-            var repo = new SqliteOpponentRepository();
-            var nav = new NavigationService(vm => _mainVM.CurrentViewModel = vm);
+            repo = new SqliteOpponentRepository();
+            nav = new NavigationService(vm => _mainVM.CurrentViewModel = vm);
 
             // Startseite: Gegnerliste
             _mainVM.CurrentViewModel = new OpponentProfilesViewModel(nav, repo);
@@ -92,7 +95,8 @@ namespace TactIQ
             {
                 case "Gegner":
                     this.Title = "Gegnerprofile";
-                    MainContent.Content = new OpponentProfilesUC(); 
+                    var vm = new OpponentProfilesViewModel(nav, repo);
+                    _mainVM.CurrentViewModel = vm;
                     break;
                 case "Analyse":
                     this.Title = "Analyse";

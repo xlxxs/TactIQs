@@ -18,10 +18,10 @@
                     <TabItem Header="Übersicht">
                         <StackPanel>
                             
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                            <TextBlock Text="Verein:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                            <TextBox Text="{Binding Club, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
-                        </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                <TextBlock Text="Verein:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <TextBox Text="{Binding Club, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
+                            </StackPanel>
                             <StackPanel>
                                 <TextBlock Text="✅ Gute Vorhand"/>
                                 <TextBlock Text="✅ Starker Unterschnitt"/>
@@ -36,6 +36,13 @@
                                     <DataGridTextColumn Header="Ergebnis" Binding="{Binding Result}" />
                                 </DataGrid.Columns>
                             </DataGrid>
+                            <Button Content="💾 Speichern"  HorizontalAlignment="Center"
+                                    Background="#2C3E50" Foreground="White" FontWeight="Bold"
+                                    Width="100"
+                                    Height="30"
+                                    Margin="10"
+                                    Command="{Binding SaveCommand}" />
+                            
                         </StackPanel>
                     </TabItem>
 
