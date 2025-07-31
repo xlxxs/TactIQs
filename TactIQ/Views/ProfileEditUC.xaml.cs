@@ -44,12 +44,33 @@ namespace TactIQ.Views
 
         private void NewNote_Click(object sender, RoutedEventArgs e)
         {
-            var popup = new NewNoteWindow();
-            popup.Owner = Window.GetWindow(this);
-            if (popup.ShowDialog() == true)
+            if (DataContext is ProfileEditViewModel parentVm)
             {
-                var note = popup.NewNote;
-                NotesDataGrid.Items.Add(note);
+                var vm = new NoteEditViewModel(parentVm._nav, parentVm._notesRepo, new Model.Note { OpponentId = parentVm.Id });
+
+                var popup = new NewNoteWindow(parentVm._nav, parentVm._notesRepo, new Model.Note { OpponentId = parentVm.Id });
+                popup.Owner = Window.GetWindow(this);
+                if (popup.ShowDialog() == true)
+                {
+                    var note = popup.NewNote;
+                    NotesDataGrid.Items.Add(note);
+                }
+            }
+        }
+
+        private void NoteDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (DataContext is ProfileEditViewModel parentVm && parentVm.SelectedNote != null)
+            {
+                var vm = new NoteEditViewModel(parentVm._nav, parentVm._notesRepo, parentVm.SelectedNote);
+
+                var popup = new NewNoteWindow(parentVm._nav, parentVm._notesRepo, parentVm.SelectedNote);
+                popup.Owner = Window.GetWindow(this);
+
+                if (popup.ShowDialog() == true)
+                {
+                    parentVm.LoadNotesCommand.Execute(null);
+                }
             }
         }
 

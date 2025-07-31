@@ -62,7 +62,8 @@
                                       ItemsSource="{Binding AllMatches}" 
                                       SelectedItem="{Binding SelectedMatch, Mode=TwoWay}" 
                                       Name="MatchDataGrid"
-                                      MouseDoubleClick="MatchDataGrid_MouseDoubleClick">
+                                      MouseDoubleClick="MatchDataGrid_MouseDoubleClick"
+                                      IsReadOnly="True">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Datum" Binding="{Binding Date}" Width="*" />
                                     <DataGridCheckBoxColumn Header="Sieg?" Binding="{Binding IsWin}" Width="*" />
@@ -95,7 +96,9 @@
                                       SelectedIndex="1"                                       
                                       ItemsSource="{Binding AllNotes}" 
                                       SelectedItem="{Binding SelectedNote, Mode=TwoWay}"  
-                                      Name="NotesDataGrid">
+                                      Name="NotesDataGrid"
+                                      MouseDoubleClick="NoteDataGrid_MouseDoubleClick"
+                                      IsReadOnly="True">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Notiz" Binding="{Binding Content}" Width="2*" />
                                     <DataGridTextColumn Header="Typ" Binding="{Binding Type}" Width="*" />

@@ -12,30 +12,29 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using TactIQ.Model;
+using TactIQ.ViewModels;
+using static TactIQ.Miscellaneous.Interfaces;
 
 namespace TactIQ.Views
 {
     /// <summary>
     /// Interaktionslogik für NewNoteWindow.xaml
     /// </summary>
-    public partial class NewNoteWindow : Window
+    public partial class NewNoteWindow : Window, IDialogCloser 
     {
         public Note NewNote { get; private set; }
 
-        public NewNoteWindow()
+        public NewNoteWindow(INavigationService nav, INoteRepository repo, Note? existing = null)
         {
+            var vm = new NoteEditViewModel(nav, repo, existing);
+            vm.DialogCloser = this;
+            this.DataContext = vm;
             InitializeComponent();
         }
 
-        private void Save_Click(object sender, RoutedEventArgs e)
+        public void Close(bool? dialogResult = true)
         {
-            NewNote = new Note
-            {
-                Content = NoteTextBox.Text,
-                Type = TypeBox.Text,
-                Category = CategoryBox.Text
-            };
-            DialogResult = true;
+            DialogResult = dialogResult;
             Close();
         }
     }
