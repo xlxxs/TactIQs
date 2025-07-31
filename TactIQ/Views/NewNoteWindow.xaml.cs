@@ -31,7 +31,7 @@ namespace TactIQ.Views
         {
             NewNote = new Note
             {
-                Text = NoteTextBox.Text,
+                Content = NoteTextBox.Text,
                 Type = TypeBox.Text,
                 Category = CategoryBox.Text
             };

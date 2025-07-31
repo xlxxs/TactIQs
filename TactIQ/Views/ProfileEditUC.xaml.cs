@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TactIQ.ViewModels;
 
 namespace TactIQ.Views
 {
@@ -27,12 +28,17 @@ namespace TactIQ.Views
 
         private void NewMatch_Click(object sender, RoutedEventArgs e)
         {
-            var popup = new NewMatchWindow();
-            popup.Owner = Window.GetWindow(this);
-            if (popup.ShowDialog() == true)
+            if (DataContext is ProfileEditViewModel parentVm)
             {
-                var match = popup.NewMatch;
-                MatchDataGrid.Items.Add(match);
+                var vm = new MatchEditViewModel(parentVm._nav, parentVm._matchRepo, new Model.Match { Date=DateTime.Now, OpponentId = parentVm.Id});
+
+                var popup = new NewMatchWindow(parentVm._nav, parentVm._matchRepo, new Model.Match { Date=DateTime.Now, OpponentId = parentVm.Id}); 
+                popup.Owner = Window.GetWindow(this);
+                if (popup.ShowDialog() == true)
+                {
+                    var match = popup.NewMatch;
+                    MatchDataGrid.Items.Add(match);
+                }
             }
         }
 
@@ -44,6 +50,22 @@ namespace TactIQ.Views
             {
                 var note = popup.NewNote;
                 NotesDataGrid.Items.Add(note);
+            }
+        }
+
+        private void MatchDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (DataContext is ProfileEditViewModel parentVm && parentVm.SelectedMatch != null)
+            {
+                var vm = new MatchEditViewModel(parentVm._nav, parentVm._matchRepo, parentVm.SelectedMatch);
+
+                var popup = new NewMatchWindow(parentVm._nav, parentVm._matchRepo, parentVm.SelectedMatch);
+                popup.Owner = Window.GetWindow(this);
+
+                if (popup.ShowDialog() == true)
+                {
+                    parentVm.LoadMatchesCommand.Execute(null);
+                }
             }
         }
     }

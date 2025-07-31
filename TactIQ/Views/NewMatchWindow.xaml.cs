@@ -12,31 +12,28 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using TactIQ.Model;
+using TactIQ.ViewModels;
+using static TactIQ.Miscellaneous.Interfaces;
 
 namespace TactIQ.Views
 {
     /// <summary>
     /// Interaktionslogik für NewMatchWindow.xaml
     /// </summary>
-    public partial class NewMatchWindow : Window
+    public partial class NewMatchWindow : Window, IDialogCloser 
     {
         public Match NewMatch { get; private set; }
 
-        public NewMatchWindow()
+        public NewMatchWindow(INavigationService nav, IMatchRepository repo, Match? existing = null)
         {
             InitializeComponent();
+            var vm = new MatchEditViewModel(nav, repo, existing);
+            vm.DialogCloser = this; 
+            this.DataContext = vm;
         }
-
-        private void Save_Click(object sender, RoutedEventArgs e)
+        public void Close(bool? dialogResult = true)
         {
-            NewMatch = new Match
-            {
-                Date = MatchDatePicker.SelectedDate?.ToString("dd.MM.yyyy"),
-                Result = ResultBox.Text,
-                Competition = CompetitionBox.Text,
-                Notes = NotesBox.Text
-            };
-            DialogResult = true;
+            DialogResult = dialogResult;
             Close();
         }
     }

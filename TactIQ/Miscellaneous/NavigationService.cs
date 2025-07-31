@@ -1,6 +1,6 @@
 ﻿using System;
 using TactIQ.Miscellaneous;
-using static TactIQ.Miscellaneous.Abstractions;
+using static TactIQ.Miscellaneous.Interfaces;
 
 namespace TactIQ.Services
 {

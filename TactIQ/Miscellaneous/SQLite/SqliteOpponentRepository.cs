@@ -2,9 +2,9 @@
 using System.Data.SQLite;
 using TactIQ.Miscellaneous;
 using TactIQ.Model;
-using static TactIQ.Miscellaneous.Abstractions;
+using static TactIQ.Miscellaneous.Interfaces;
 
-namespace TactIQ.Services
+namespace TactIQ.Miscellaneous.SQLite
 {
     public class SqliteOpponentRepository : IOpponentRepository
     {
@@ -32,7 +32,7 @@ namespace TactIQ.Services
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
             conn.Open();
-            using var cmd = new SQLiteCommand("SELECT Id, Name, '' as Club, Marked FROM Opponent WHERE Id = @id", conn);
+            using var cmd = new SQLiteCommand("SELECT Id, Name, Club, Marked FROM Opponent WHERE Id = @id", conn);
             cmd.Parameters.AddWithValue("@id", id);
             using var r = cmd.ExecuteReader();
             if (r.Read())
@@ -62,9 +62,10 @@ namespace TactIQ.Services
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
             conn.Open();
-            using var cmd = new SQLiteCommand("UPDATE Opponent SET Name=@name, Marked=@marked WHERE Id=@id", conn);
+            using var cmd = new SQLiteCommand("UPDATE Opponent SET Name=@name, Marked=@marked, Club=@club WHERE Id=@id", conn);
             cmd.Parameters.AddWithValue("@name", opponent.Name);
             cmd.Parameters.AddWithValue("@marked", opponent.Marked ? 1 : 0);
+            cmd.Parameters.AddWithValue("@club", opponent.Club);
             cmd.Parameters.AddWithValue("@id", opponent.Id);
             cmd.ExecuteNonQuery();
         }

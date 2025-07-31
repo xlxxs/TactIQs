@@ -8,7 +8,10 @@ namespace TactIQ.Model
 {
     public class Match
     {
-        public string? Date { get; set; }
+        public int Id { get; set; }
+        public int OpponentId { get; set; }
+
+        public DateTime? Date { get; set; }
         public bool IsWin { get; set; }
 
         public string Result { get; set; }

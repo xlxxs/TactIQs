@@ -8,9 +8,11 @@ namespace TactIQ.Model
 {
     public class Note
     {
-        public string Text { get; internal set; }
+        public int Id { get; internal set; }
+        public int OpponentId { get; internal set; }
+        public string Content { get; internal set; }
         public string Type { get; internal set; }
-        public bool IsValid { get; internal set; }
         public string Category { get; internal set; }
+        public DateTime CreatedAt { get; internal set; }
     }
 }

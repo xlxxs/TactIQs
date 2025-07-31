@@ -10,6 +10,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TactIQ.Miscellaneous;
+using TactIQ.Miscellaneous.SQLite;
 using TactIQ.Services;
 using TactIQ.ViewModels;
 using TactIQ.Views;
@@ -40,7 +41,8 @@ namespace TactIQ
         public bool isSidebarCollapsed => !isSidebarExpanded;
         private readonly MainViewModel _mainVM;
 
-        SqliteOpponentRepository repo;
+        SqliteOpponentRepository opponentRepo;
+        SqliteMatchRepository matchRepo;
         NavigationService nav;
 
         public MainWindow()
@@ -54,11 +56,12 @@ namespace TactIQ
             _mainVM = new MainViewModel();
             DataContext = _mainVM;
 
-            repo = new SqliteOpponentRepository();
+            opponentRepo = new SqliteOpponentRepository();
+
             nav = new NavigationService(vm => _mainVM.CurrentViewModel = vm);
 
             // Startseite: Gegnerliste
-            _mainVM.CurrentViewModel = new OpponentProfilesViewModel(nav, repo);
+            _mainVM.CurrentViewModel = new OpponentProfilesViewModel(nav, opponentRepo);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -95,7 +98,7 @@ namespace TactIQ
             {
                 case "Gegner":
                     this.Title = "Gegnerprofile";
-                    var vm = new OpponentProfilesViewModel(nav, repo);
+                    var vm = new OpponentProfilesViewModel(nav, opponentRepo);
                     _mainVM.CurrentViewModel = vm;
                     break;
                 case "Analyse":

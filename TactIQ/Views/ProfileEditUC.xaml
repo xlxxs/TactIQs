@@ -53,9 +53,16 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <DataGrid Grid.Row="0" AutoGenerateColumns="False" HeadersVisibility="Column"
-                                      CanUserAddRows="False" Margin="0,0,0,10" SelectionMode="Single" 
-                                      SelectedIndex="1" Name="MatchDataGrid">
+                            <DataGrid Grid.Row="0"
+                                      AutoGenerateColumns="False"
+                                      HeadersVisibility="Column"
+                                      CanUserAddRows="False"
+                                      Margin="0,0,0,10"
+                                      SelectionMode="Single"
+                                      ItemsSource="{Binding AllMatches}" 
+                                      SelectedItem="{Binding SelectedMatch, Mode=TwoWay}" 
+                                      Name="MatchDataGrid"
+                                      MouseDoubleClick="MatchDataGrid_MouseDoubleClick">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Datum" Binding="{Binding Date}" Width="*" />
                                     <DataGridCheckBoxColumn Header="Sieg?" Binding="{Binding IsWin}" Width="*" />
@@ -64,6 +71,7 @@
                                     <DataGridTextColumn Header="Bemerkungen" Binding="{Binding Notes}" Width="*" />
                                 </DataGrid.Columns>
                             </DataGrid>
+
 
                             <Button Grid.Row="1" Content="+ Neues Match" HorizontalAlignment="Center" 
                                     Background="#2C3E50" Foreground="White" FontWeight="Bold" 
@@ -78,21 +86,19 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <DataGrid Grid.Row="0" AutoGenerateColumns="False" HeadersVisibility="Column"
-                                      CanUserAddRows="False" Margin="0,0,0,10" SelectionMode="Single"
-                                      SelectedIndex="1" Name="NotesDataGrid">
+                            <DataGrid Grid.Row="0" 
+                                      AutoGenerateColumns="False" 
+                                      HeadersVisibility="Column"
+                                      CanUserAddRows="False" 
+                                      Margin="0,0,0,10" 
+                                      SelectionMode="Single"
+                                      SelectedIndex="1"                                       
+                                      ItemsSource="{Binding AllNotes}" 
+                                      SelectedItem="{Binding SelectedNote, Mode=TwoWay}"  
+                                      Name="NotesDataGrid">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Notiz" Binding="{Binding Text}" Width="2*" />
-
-                                    <DataGridTemplateColumn Header="Typ" Width="Auto">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <CheckBox IsChecked="{Binding IsValid}" HorizontalAlignment="Center"/>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-
-                                    <DataGridTextColumn Header="Kategorie" Binding="{Binding Type}" Width="*" />
+                                    <DataGridTextColumn Header="Notiz" Binding="{Binding Content}" Width="2*" />
+                                    <DataGridTextColumn Header="Typ" Binding="{Binding Type}" Width="*" />
                                 </DataGrid.Columns>
                             </DataGrid>
 

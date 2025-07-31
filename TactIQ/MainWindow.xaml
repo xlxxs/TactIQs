@@ -75,3 +75,4 @@
         <ContentControl Content="{Binding CurrentViewModel}" Grid.Column="1" x:Name="MainContent"/>
     </Grid>
 </Window>
+                                                                                                                                                                          

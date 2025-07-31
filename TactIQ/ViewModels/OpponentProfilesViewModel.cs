@@ -3,14 +3,15 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using TactIQ.Model;
-using static TactIQ.Miscellaneous.Abstractions;
+using static TactIQ.Miscellaneous.Interfaces;
 
 namespace TactIQ.ViewModels
 {
     public class OpponentProfilesViewModel : INotifyPropertyChanged
     {
         private readonly INavigationService _nav;
-        private readonly IOpponentRepository _repo;
+        private readonly IOpponentRepository _opponentRepo;
+        private readonly IMatchRepository _matchRepo;
 
         public ObservableCollection<Opponent> AllOpponents { get; } = new();
         public ObservableCollection<Opponent> FilteredOpponents { get; } = new();
@@ -64,10 +65,10 @@ namespace TactIQ.ViewModels
         public ICommand DeleteOpponentCommand { get; }
         public ICommand OpenSelectedCommand { get; }
 
-        public OpponentProfilesViewModel(INavigationService nav, IOpponentRepository repo)
+        public OpponentProfilesViewModel(INavigationService nav, IOpponentRepository opponentRepo)
         {
             _nav = nav;
-            _repo = repo;
+            _opponentRepo = opponentRepo;
 
             LoadOpponentsCommand = new RelayCommand(_ => LoadOpponents());
             AddOpponentCommand = new RelayCommand(name => AddOpponent(name as string));
@@ -80,7 +81,7 @@ namespace TactIQ.ViewModels
         public void LoadOpponents()
         {
             AllOpponents.Clear();
-            foreach (var o in _repo.GetAll())
+            foreach (var o in _opponentRepo.GetAll())
                 AllOpponents.Add(o);
 
             ApplyFilter();
@@ -106,7 +107,7 @@ namespace TactIQ.ViewModels
         {
             if (string.IsNullOrWhiteSpace(name)) return;
 
-            var vm = new ProfileEditViewModel(_nav, _repo, new Opponent { Name = name });
+            var vm = new ProfileEditViewModel(_nav, _opponentRepo, new Opponent { Name = name });
             _nav.NavigateTo(vm);
 
             LoadOpponents();
@@ -115,14 +116,14 @@ namespace TactIQ.ViewModels
         public void DeleteOpponent(Opponent? opponent)
         {
             if (opponent == null) return;
-            _repo.Delete(opponent.Id);
+            _opponentRepo.Delete(opponent.Id);
             LoadOpponents();
         }
 
         private void OpenSelected()
         {
             if (SelectedOpponent == null) return;
-            var vm = new ProfileEditViewModel(_nav, _repo, SelectedOpponent);
+            var vm = new ProfileEditViewModel(_nav, _opponentRepo, SelectedOpponent);
             _nav.NavigateTo(vm);
 
             SelectedOpponent = null;

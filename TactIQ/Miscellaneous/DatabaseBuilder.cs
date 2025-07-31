@@ -58,6 +58,9 @@ namespace TactIQ.Miscellaneous
                 OpponentId INTEGER NOT NULL,
                 MatchDate DATETIME DEFAULT CURRENT_TIMESTAMP,
                 Result TEXT,
+                Competition TEXT,   
+                IsWin BOOLEAN DEFAULT 0,
+                Notes TEXT,
                 FOREIGN KEY (OpponentId) REFERENCES Opponent(Id)
             );";
             new SQLiteCommand(sql, conn).ExecuteNonQuery();
@@ -70,6 +73,7 @@ namespace TactIQ.Miscellaneous
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
                 OpponentId INTEGER NOT NULL,
                 Content TEXT,
+                Type TEXT,
                 CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (OpponentId) REFERENCES Opponent(Id)
             );";
