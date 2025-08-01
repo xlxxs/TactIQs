@@ -59,7 +59,7 @@ namespace TactIQ.Miscellaneous.SQLite
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
             conn.Open();
-            using var cmd = new SQLiteCommand("INSERT INTO Note (OpponnentId, Content, Type) VALUES (@opponentId, @content, @type); SELECT last_insert_rowid();", conn);
+            using var cmd = new SQLiteCommand("INSERT INTO Note (OpponentId, Content, Type) VALUES (@opponentId, @content, @type); SELECT last_insert_rowid();", conn);
 
             cmd.Parameters.AddWithValue("@opponentId", note.OpponentId);
             cmd.Parameters.AddWithValue("@content", note.Content);

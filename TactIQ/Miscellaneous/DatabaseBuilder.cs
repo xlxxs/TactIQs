@@ -60,6 +60,7 @@ namespace TactIQ.Miscellaneous
                 Result TEXT,
                 Competition TEXT,   
                 IsWin BOOLEAN DEFAULT 0,
+                Marked BOOLEAN DEFAULT 0,
                 Notes TEXT,
                 FOREIGN KEY (OpponentId) REFERENCES Opponent(Id)
             );";

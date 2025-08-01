@@ -35,6 +35,7 @@ namespace TactIQ.ViewModels
         private string _notes;
         public string Notes { get => _notes; set { _notes = value; OnPropertyChanged(); } }
         public ICommand SaveCommand { get; }
+        public Action? OnSaved { get; set; }
 
         public MatchEditViewModel(INavigationService nav, IMatchRepository repo, Match match)
         {
@@ -68,7 +69,9 @@ namespace TactIQ.ViewModels
                 _repo.Update(new Match { Id = Id, Competition = _competition, Date = _date, IsWin = _isWin, Notes = _notes, OpponentId = _opponentId, Result = _result });
             }
 
-            DialogCloser?.Close(true);
+            OnSaved?.Invoke();
+
+            DialogCloser?.Close(null);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

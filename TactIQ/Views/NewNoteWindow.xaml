@@ -22,7 +22,7 @@
                           SelectedValue="{Binding Type, UpdateSourceTrigger=PropertyChanged}">
                     <ComboBoxItem Content="Stärke"/>
                     <ComboBoxItem Content="Schwäche"/>
-                    <ComboBoxItem Content="Unentschieden"/>
+                    <ComboBoxItem Content="Sonstiges"/>
                 </ComboBox>            
             </StackPanel>
 
@@ -30,9 +30,11 @@
                 <TextBlock Text="Kategorie:" Width="100"/>
                 <ComboBox Width="221" Height="30" FontSize="13" 
                           SelectedValue="{Binding Category, UpdateSourceTrigger=PropertyChanged}">
-                    <ComboBoxItem Content="Kategorie 1"/>
-                    <ComboBoxItem Content="Kategorie 2"/>
-                    <ComboBoxItem Content="Kategorie 3"/>
+                    <ComboBoxItem Content="Technik"/>
+                    <ComboBoxItem Content="Taktik"/>
+                    <ComboBoxItem Content="Mentalität"/>
+                    <ComboBoxItem Content="Mobilität"/>
+                    <ComboBoxItem Content="Fitness"/>
                 </ComboBox>
             </StackPanel>
 

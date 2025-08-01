@@ -24,17 +24,15 @@ namespace TactIQ.Views
     {
         public Match NewMatch { get; private set; }
 
-        public NewMatchWindow(INavigationService nav, IMatchRepository repo, Match? existing = null)
+        public NewMatchWindow(MatchEditViewModel vm)
         {
             InitializeComponent();
-            var vm = new MatchEditViewModel(nav, repo, existing);
             vm.DialogCloser = this; 
             this.DataContext = vm;
         }
         public void Close(bool? dialogResult = true)
         {
-            DialogResult = dialogResult;
-            Close();
+            base.Close();
         }
     }
 }

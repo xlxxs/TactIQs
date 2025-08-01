@@ -13,6 +13,7 @@ namespace TactIQ.Model
 
         public DateTime? Date { get; set; }
         public bool IsWin { get; set; }
+        public bool Marked { get; set; }
 
         public string Result { get; set; }
         public string Competition { get; set; }

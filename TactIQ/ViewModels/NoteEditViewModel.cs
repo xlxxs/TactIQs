@@ -33,6 +33,7 @@ namespace TactIQ.ViewModels
         public bool IsMarked { get => _isMarked; set { _isMarked = value; OnPropertyChanged(); } }
 
         public ICommand SaveCommand { get; }
+        public Action? OnSaved { get; set; } 
 
         public NoteEditViewModel(INavigationService nav, INoteRepository repo, Note note)
         {
@@ -64,7 +65,9 @@ namespace TactIQ.ViewModels
                 _repo.Update(new Note { Id = Id, Content = _content, Category = _category, OpponentId = _opponentId, Type = _type });
             }
 
-            DialogCloser?.Close(true);
+            OnSaved?.Invoke();
+
+            DialogCloser?.Close(null);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

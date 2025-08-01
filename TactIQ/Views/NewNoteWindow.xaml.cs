@@ -20,22 +20,21 @@ namespace TactIQ.Views
     /// <summary>
     /// Interaktionslogik für NewNoteWindow.xaml
     /// </summary>
-    public partial class NewNoteWindow : Window, IDialogCloser 
+    public partial class NewNoteWindow : Window, IDialogCloser
     {
         public Note NewNote { get; private set; }
 
-        public NewNoteWindow(INavigationService nav, INoteRepository repo, Note? existing = null)
+        public NewNoteWindow(NoteEditViewModel vm)
         {
-            var vm = new NoteEditViewModel(nav, repo, existing);
-            vm.DialogCloser = this;
-            this.DataContext = vm;
             InitializeComponent();
+            vm.DialogCloser = this;
+            DataContext = vm;
         }
 
         public void Close(bool? dialogResult = true)
         {
-            DialogResult = dialogResult;
-            Close();
+            base.Close();
         }
     }
+
 }
