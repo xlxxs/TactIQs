@@ -7,44 +7,96 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-     <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="10">
+        <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="10">
             <StackPanel>
                 <TextBox Name="tb_OpponentName"
                      Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      FontSize="18" FontWeight="Bold" Margin="0,0,0,10" />
-
-
+                
                 <TabControl>
                     <TabItem Header="Übersicht">
-                        <StackPanel>
-                            
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                                <TextBlock Text="Verein:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                                <TextBox Text="{Binding Club, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
-                            </StackPanel>
-                            <StackPanel>
-                                <TextBlock Text="✅ Gute Vorhand"/>
-                                <TextBlock Text="✅ Starker Unterschnitt"/>
-                                <TextBlock Text="❌ Schwach gegen Topspin"/>
-                                <TextBlock Text="❌ Fehlende Bewegung"/>
-                            </StackPanel>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel Margin="10">
 
-                            <DataGrid AutoGenerateColumns="False" Margin="0,20,0,0" Height="150">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Datum" Binding="{Binding Date}" />
-                                    <DataGridTextColumn Header="Wettkampf" Binding="{Binding Competition}" />
-                                    <DataGridTextColumn Header="Ergebnis" Binding="{Binding Result}" />
-                                </DataGrid.Columns>
-                            </DataGrid>
-                            <Button Content="💾 Speichern"  HorizontalAlignment="Center"
+                                <!-- Vereinsname -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                    <TextBlock Text="Verein:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                    <TextBox Text="{Binding Club, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
+                                </StackPanel>
+
+                                <!-- Letzte Stärken -->
+                                <TextBlock Text="Top Stärken:" FontWeight="Bold" Margin="0,10,0,0"/>
+                                <ItemsControl ItemsSource="{Binding RecentStrengths}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock>
+                                                <Run Text="✅ " />
+                                                <Run Text="{Binding Content}" />
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <!-- Letzte Schwächen -->
+                                <TextBlock Text="Top Schwächen:" FontWeight="Bold" Margin="0,10,0,0"/>
+                                <ItemsControl ItemsSource="{Binding RecentWeaknesses}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock>
+                                                <Run Text="❌ " />
+                                                <Run Text="{Binding Content}" />
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <!-- Letzte Sonstiges -->
+                                <TextBlock Text="Top Notizen (Sonstiges):" FontWeight="Bold" Margin="0,10,0,0"/>
+                                <ItemsControl ItemsSource="{Binding RecentMisc}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock>
+                                                <Run Text="🛈 " />
+                                                <Run Text="{Binding Content}" />
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <!-- Letzte Matches -->
+                                <TextBlock Text="Letzte Matches:" FontWeight="Bold" Margin="20,20,0,10"/>
+                                <DataGrid AutoGenerateColumns="False"
+                                  ItemsSource="{Binding RecentMatches}"
+                                  IsReadOnly="True"
+                                  Height="150">
+                                    <DataGrid.Resources>
+                                        <Style TargetType="DataGridRow">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsMarked}" Value="True">
+                                                    <Setter Property="Background" Value="#FFFDDDDD" />
+                                                    <Setter Property="FontWeight" Value="Bold"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGrid.Resources>
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Datum" Binding="{Binding Date}" />
+                                        <DataGridTextColumn Header="Wettkampf" Binding="{Binding Competition}" />
+                                        <DataGridTextColumn Header="Ergebnis" Binding="{Binding Result}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                                <!-- Speichern-Button -->
+                                <Button Content="💾 Speichern"  HorizontalAlignment="Center"
                                     Background="#2C3E50" Foreground="White" FontWeight="Bold"
                                     Width="100"
                                     Height="30"
                                     Margin="10"
                                     Command="{Binding SaveCommand}" />
-                            
-                        </StackPanel>
+                            </StackPanel>
+                        </ScrollViewer>
                     </TabItem>
+
 
                     <TabItem Header="Matches">
                         <Grid Margin="0,10,0,0">
@@ -64,6 +116,16 @@
                                       Name="MatchDataGrid"
                                       MouseDoubleClick="MatchDataGrid_MouseDoubleClick"
                                       IsReadOnly="True">
+                                <DataGrid.Resources>
+                                    <Style TargetType="DataGridRow">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Marked}" Value="True">
+                                                <Setter Property="Background" Value="IndianRed" />
+                                                <Setter Property="FontWeight" Value="Bold"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGrid.Resources>
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Datum" Binding="{Binding Date}" Width="*" />
                                     <DataGridCheckBoxColumn Header="Sieg?" Binding="{Binding IsWin}" Width="*" />
@@ -99,9 +161,20 @@
                                       Name="NotesDataGrid"
                                       MouseDoubleClick="NoteDataGrid_MouseDoubleClick"
                                       IsReadOnly="True">
+                                <DataGrid.Resources>
+                                    <Style TargetType="DataGridRow">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Marked}" Value="True">
+                                                <Setter Property="Background" Value="IndianRed" />
+                                                <Setter Property="FontWeight" Value="Bold"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGrid.Resources>
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Notiz" Binding="{Binding Content}" Width="2*" />
                                     <DataGridTextColumn Header="Typ" Binding="{Binding Type}" Width="*" />
+                                    <DataGridTextColumn Header="Kategorie" Binding="{Binding Category}" Width="*" />
                                 </DataGrid.Columns>
                             </DataGrid>
 
@@ -113,6 +186,6 @@
                     </TabItem>
                 </TabControl>
             </StackPanel>
-        </Border>     
+        </Border>
     </Grid>
 </UserControl>

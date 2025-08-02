@@ -22,6 +22,8 @@ namespace TactIQ.ViewModels
 
         private bool _isWin;
         public bool IsWin { get => _isWin; set { _isWin = value; OnPropertyChanged(); } }
+        private bool _marked;
+        public bool Marked { get => _marked; set { _marked = value; OnPropertyChanged(); } }
 
         private int _opponentId;
         public int OpponentId { get => _opponentId; set { _opponentId = value; OnPropertyChanged(); } }
@@ -52,6 +54,7 @@ namespace TactIQ.ViewModels
                 _isWin = match.IsWin;
                 _result = match.Result;
                 _notes = match.Notes;
+                _marked = match.Marked;
             }
 
             SaveCommand = new RelayCommand(_ => Save());
@@ -62,7 +65,7 @@ namespace TactIQ.ViewModels
         {
             if (Id == 0 || _repo.GetById(Id) == null)
             {
-                _repo.Add(new Match { Competition = _competition, Date = _date, IsWin = _isWin, Notes = _notes, OpponentId = _opponentId, Result = _result });
+                _repo.Add(new Match { Competition = _competition, Date = _date, IsWin = _isWin, Notes = _notes, OpponentId = _opponentId, Result = _result, Marked = _marked });
             }
             else
             {

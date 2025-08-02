@@ -16,7 +16,7 @@ namespace TactIQ.Miscellaneous.SQLite
             var list = new List<Note>();
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
             conn.Open();
-            using var cmd = new SQLiteCommand("SELECT Id, OpponentId, Content, Type FROM Note WHERE OpponentId = @id", conn);
+            using var cmd = new SQLiteCommand("SELECT Id, OpponentId, Content, Type, Marked FROM Note WHERE OpponentId = @id", conn);
             cmd.Parameters.AddWithValue("@id", opponentId);
 
             using var r = cmd.ExecuteReader();
@@ -27,7 +27,8 @@ namespace TactIQ.Miscellaneous.SQLite
                     Id = r.GetInt32(0),
                     OpponentId = r.GetInt32(1),
                     Content = r.IsDBNull(2) ? "" : r.GetString(2),
-                    Type = r.IsDBNull(3) ? "" : r.GetString(3)
+                    Type = r.IsDBNull(3) ? "" : r.GetString(3),
+                    Marked = r.HasRows && r.GetBoolean(4)
                 });           
             }
 
@@ -38,7 +39,7 @@ namespace TactIQ.Miscellaneous.SQLite
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
             conn.Open();
-            using var cmd = new SQLiteCommand("SELECT Id, OpponentId, Content, Type, CreatedAt FROM Note WHERE Id = @id", conn);
+            using var cmd = new SQLiteCommand("SELECT Id, OpponentId, Content, Type, CreatedAt, Marked, Category FROM Note WHERE Id = @id", conn);
             cmd.Parameters.AddWithValue("@id", id);
             using var r = cmd.ExecuteReader();
             if (r.Read())
@@ -49,7 +50,9 @@ namespace TactIQ.Miscellaneous.SQLite
                     OpponentId = r.GetInt32(1),
                     Content = r.IsDBNull(2) ? "" : r.GetString(2),
                     Type = r.IsDBNull(3) ? "" : r.GetString(3),
-                    CreatedAt = r.GetDateTime(4)
+                    CreatedAt = r.GetDateTime(4),
+                    Marked = r.HasRows && r.GetBoolean(5),
+                    Category = r.IsDBNull(6) ? "" : r.GetString(6)
                 };
             }
             return null;
@@ -59,11 +62,13 @@ namespace TactIQ.Miscellaneous.SQLite
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
             conn.Open();
-            using var cmd = new SQLiteCommand("INSERT INTO Note (OpponentId, Content, Type) VALUES (@opponentId, @content, @type); SELECT last_insert_rowid();", conn);
+            using var cmd = new SQLiteCommand("INSERT INTO Note (OpponentId, Content, Type, Marked, Category) VALUES (@opponentId, @content, @type, @marked, @category); SELECT last_insert_rowid();", conn);
 
             cmd.Parameters.AddWithValue("@opponentId", note.OpponentId);
             cmd.Parameters.AddWithValue("@content", note.Content);
             cmd.Parameters.AddWithValue("@type", note.Type);
+            cmd.Parameters.AddWithValue("@marked", note.Marked ? 1 : 0);
+            cmd.Parameters.AddWithValue("@category", note.Category ?? string.Empty);
 
             return (int)(long)cmd.ExecuteScalar()!;
         }
@@ -72,12 +77,14 @@ namespace TactIQ.Miscellaneous.SQLite
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
             conn.Open();
-            using var cmd = new SQLiteCommand("UPDATE Note SET OpponnentId=@opponentId, Content=@content, Type=@type WHERE Id=@id", conn);
+            using var cmd = new SQLiteCommand("UPDATE Note SET OpponnentId=@opponentId, Content=@content, Type=@type, Marked = @marked, Category = @category WHERE Id=@id", conn);
 
             cmd.Parameters.AddWithValue("@id", note.Id);
             cmd.Parameters.AddWithValue("@opponentId", note.OpponentId);
             cmd.Parameters.AddWithValue("@content", note.Content);
             cmd.Parameters.AddWithValue("@type", note.Type);
+            cmd.Parameters.AddWithValue("@marked", note.Marked ? 1 : 0);
+            cmd.Parameters.AddWithValue("@category", note.Category ?? string.Empty);
 
             cmd.ExecuteNonQuery();
         }

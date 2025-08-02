@@ -17,7 +17,7 @@ namespace TactIQ.Miscellaneous.SQLite
             var list = new List<Match>();
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
             conn.Open();
-            using var cmd = new SQLiteCommand("SELECT Id, OpponentId, MatchDate, Result, Competition, IsWin, Notes FROM Match Where OpponentId = @id", conn);
+            using var cmd = new SQLiteCommand("SELECT Id, OpponentId, MatchDate, Result, Competition, IsWin, Notes, Marked FROM Match Where OpponentId = @id", conn);
             cmd.Parameters.AddWithValue("@id", opponentId);
 
             using var r = cmd.ExecuteReader();
@@ -27,11 +27,12 @@ namespace TactIQ.Miscellaneous.SQLite
                 {
                     Id = r.GetInt32(0),
                     OpponentId = r.GetInt32(1),
-                    Date = ParseDateSafe(r, 2), // ← Aufruf der Hilfsmethode
+                    Date = ParseDateSafe(r, 2),
                     Result = r.IsDBNull(3) ? "" : r.GetString(3),
                     Competition = r.IsDBNull(4) ? "" : r.GetString(4),
                     IsWin = r.GetBoolean(5),
-                    Notes = r.IsDBNull(6) ? "" : r.GetString(6)
+                    Notes = r.IsDBNull(6) ? "" : r.GetString(6),
+                    Marked = r.HasRows && r.GetBoolean(7)
                 });
             }
             return list;
@@ -54,7 +55,8 @@ namespace TactIQ.Miscellaneous.SQLite
                     Result = r.IsDBNull(3) ? "" : r.GetString(3),
                     Competition = r.IsDBNull(4) ? "" : r.GetString(4),
                     IsWin = r.GetBoolean(5),
-                    Notes = r.IsDBNull(6) ? "" : r.GetString(6)
+                    Notes = r.IsDBNull(6) ? "" : r.GetString(6),
+                    Marked = r.HasRows && r.GetBoolean(7)
                 };
             }
             return null;
@@ -64,7 +66,7 @@ namespace TactIQ.Miscellaneous.SQLite
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
             conn.Open();
-            using var cmd = new SQLiteCommand("INSERT INTO Match (OpponentId, MatchDate, Result, Competition, IsWin, Notes) VALUES (@opponentId, @date, @result, @competition, @iswin, @notes); SELECT last_insert_rowid();", conn);
+            using var cmd = new SQLiteCommand("INSERT INTO Match (OpponentId, MatchDate, Result, Competition, IsWin, Notes, Marked) VALUES (@opponentId, @date, @result, @competition, @iswin, @notes, @marked); SELECT last_insert_rowid();", conn);
             
             cmd.Parameters.AddWithValue("@opponentId", match.OpponentId);
             cmd.Parameters.AddWithValue("@date", match.Date);
@@ -72,6 +74,7 @@ namespace TactIQ.Miscellaneous.SQLite
             cmd.Parameters.AddWithValue("@competition", match.Competition);
             cmd.Parameters.AddWithValue("@iswin", match.IsWin ? 1 : 0);
             cmd.Parameters.AddWithValue("@notes", match.Notes);
+            cmd.Parameters.AddWithValue("@marked", match.Marked ? 1 : 0);
 
             return (int)(long)cmd.ExecuteScalar()!;
         }
@@ -80,7 +83,7 @@ namespace TactIQ.Miscellaneous.SQLite
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
             conn.Open();
-            using var cmd = new SQLiteCommand("UPDATE Match SET OpponnentId=@opponentId, MatchDate=@date, Result=@result, Competition=@competition, IsWin = @iswin, Notes = @notes WHERE Id=@id", conn);
+            using var cmd = new SQLiteCommand("UPDATE Match SET OpponnentId=@opponentId, MatchDate=@date, Result=@result, Competition=@competition, IsWin = @iswin, Notes = @notes, Marked = @marked WHERE Id=@id", conn);
     
             cmd.Parameters.AddWithValue("@id", match.Id);
             cmd.Parameters.AddWithValue("@opponentId", match.OpponentId);
@@ -89,6 +92,7 @@ namespace TactIQ.Miscellaneous.SQLite
             cmd.Parameters.AddWithValue("@competition", match.Competition);
             cmd.Parameters.AddWithValue("@iswin", match.IsWin ? 1 : 0);
             cmd.Parameters.AddWithValue("@notes", match.Notes);
+            cmd.Parameters.AddWithValue("@marked", match.Marked ? 1 : 0);
 
             cmd.ExecuteNonQuery();
         }

@@ -58,7 +58,10 @@ namespace TactIQ.ViewModels
 
         public ICommand LoadNotesCommand { get; }
         public ObservableCollection<Note> AllNotes { get; } = new();
-
+        public ObservableCollection<Match> RecentMatches { get; } = new();
+        public ObservableCollection<Note> RecentStrengths { get; } = new();
+        public ObservableCollection<Note> RecentWeaknesses { get; } = new();
+        public ObservableCollection<Note> RecentMisc { get; } = new();
         public ICommand SaveCommand { get; }
 
         public ProfileEditViewModel(INavigationService nav,IOpponentRepository repo, Opponent opponent)
@@ -86,14 +89,50 @@ namespace TactIQ.ViewModels
         public void LoadMatches()
         {
             AllMatches.Clear();
-            foreach (var o in _matchRepo.GetAllForOpponent(Id))
-                AllMatches.Add(o);
+            var matches = _matchRepo.GetAllForOpponent(Id);
+
+            foreach (var m in matches)
+                AllMatches.Add(m);
+
+            var recent = matches
+                .OrderByDescending(m => m.Marked)
+                .ThenByDescending(m => m.Date)
+                .Take(3)
+                .ToList();
+
+            RecentMatches.Clear();
+            foreach (var m in recent)
+                RecentMatches.Add(m);
         }
         public void LoadNotes()
         {
             AllNotes.Clear();
-            foreach (var o in _notesRepo.GetAllForOpponent(Id))
-                AllNotes.Add(o);
+            var notes = _notesRepo.GetAllForOpponent(Id);
+
+            foreach (var n in notes)
+                AllNotes.Add(n);
+
+            var strengths = notes
+                .Where(n => n.Type == "Stärke")
+                .OrderByDescending(n => n.Marked)
+                .ThenByDescending(n => n.CreatedAt)
+                .Take(2);
+
+            var weaknesses = notes
+                .Where(n => n.Type == "Schwäche")
+                .OrderByDescending(n => n.Marked)
+                .ThenByDescending(n => n.CreatedAt)
+                .Take(2);
+
+            var misc = notes
+                .Where(n => n.Type == "Sonstiges")
+                .OrderByDescending(n => n.Marked)
+                .ThenByDescending(n => n.CreatedAt)
+                .Take(2);
+
+            RecentStrengths.Clear(); foreach (var n in strengths) RecentStrengths.Add(n);
+            RecentWeaknesses.Clear(); foreach (var n in weaknesses) RecentWeaknesses.Add(n);
+            RecentMisc.Clear(); foreach (var n in misc) RecentMisc.Add(n);
         }
         private void Save()
         {

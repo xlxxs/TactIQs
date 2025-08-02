@@ -29,7 +29,7 @@
 
             <StackPanel Orientation="Horizontal" Margin="0,5" HorizontalAlignment="Left">
                 <TextBlock Text="Match markieren:" Width="100"/>
-                <CheckBox IsChecked="{Binding IsWin}" />
+                <CheckBox IsChecked="{Binding Marked, Mode=TwoWay}" />
             </StackPanel>
 
             <Button Content="Speichern 💾" HorizontalAlignment="Center"

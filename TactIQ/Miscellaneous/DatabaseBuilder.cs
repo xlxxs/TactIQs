@@ -75,6 +75,8 @@ namespace TactIQ.Miscellaneous
                 OpponentId INTEGER NOT NULL,
                 Content TEXT,
                 Type TEXT,
+                Category TEXT,
+                Marked BOOLEAN DEFAULT 0,
                 CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (OpponentId) REFERENCES Opponent(Id)
             );";

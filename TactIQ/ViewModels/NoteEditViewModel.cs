@@ -58,11 +58,11 @@ namespace TactIQ.ViewModels
         {
             if (Id == 0 || _repo.GetById(Id) == null)
             {
-                _repo.Add(new Note { Content = _content, Category = _category, OpponentId = _opponentId, Type = _type });
+                _repo.Add(new Note { Content = _content, Category = _category.Replace("System.Windows.Controls.ComboBoxItem: ", ""), OpponentId = _opponentId, Type = _type.Replace("System.Windows.Controls.ComboBoxItem: ", ""), Marked = _isMarked });
             }
             else
             {
-                _repo.Update(new Note { Id = Id, Content = _content, Category = _category, OpponentId = _opponentId, Type = _type });
+                _repo.Update(new Note { Id = Id, Content = _content, Category = _category.Replace("System.Windows.Controls.ComboBoxItem: ", ""), OpponentId = _opponentId, Type = _type.Replace("System.Windows.Controls.ComboBoxItem: ", ""), Marked = _isMarked });
             }
 
             OnSaved?.Invoke();
