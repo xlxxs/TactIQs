@@ -57,6 +57,7 @@ namespace TactIQ
             DataContext = _mainVM;
 
             opponentRepo = new SqliteOpponentRepository();
+            matchRepo = new SqliteMatchRepository();
 
             nav = new NavigationService(vm => _mainVM.CurrentViewModel = vm);
 
@@ -98,16 +99,18 @@ namespace TactIQ
             {
                 case "Gegner":
                     this.Title = "Gegnerprofile";
-                    var vm = new OpponentProfilesViewModel(nav, opponentRepo);
-                    _mainVM.CurrentViewModel = vm;
+                    var opponentVM = new OpponentProfilesViewModel(nav, opponentRepo);
+                    _mainVM.CurrentViewModel = opponentVM;
                     break;
                 case "Analyse":
                     this.Title = "Analyse";
-                    MainContent.Content = new OpponentProfilesUC(); 
+                    var analysisVM = new AnalysisViewModel(nav, matchRepo);
+                    _mainVM.CurrentViewModel = analysisVM;
                     break;
                 case "Export":
                     this.Title = "Export";
-                    MainContent.Content = new OpponentProfilesUC();
+                    var vm = new OpponentProfilesViewModel(nav, opponentRepo);
+                    _mainVM.CurrentViewModel = vm;
                     break;
                 case "Expand":
                     Sidebar.Width = 160;

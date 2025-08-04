@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="TactIQ.Views.AnalysisUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:TactIQ.Views"
+             xmlns:helper="clr-namespace:TactIQ.Miscellaneous"
+             xmlns:oxy="http://oxyplot.org/wpf"
+             Height="500" Width="700"
+             >
+    <UserControl.Resources>
+        <helper:PiePointConverter x:Key="PiePointConverter" />
+        <helper:IsLargeArcConverter x:Key="IsLargeArcConverter" />
+    </UserControl.Resources>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <DataGrid ItemsSource="{Binding LastMatches}" AutoGenerateColumns="False" Height="150" Margin="0,0,0,10" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Datum" Binding="{Binding Date, StringFormat=d}" />
+                <DataGridTextColumn Header="Wettkampf" Binding="{Binding Competition}" />
+                <DataGridTextColumn Header="Ergebnis" Binding="{Binding Result}" />
+                <DataGridCheckBoxColumn Header="Sieg" Binding="{Binding IsWin}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <oxy:PlotView Grid.Column="0" Model="{Binding PieChartModel}" Margin="10" />
+
+            <oxy:PlotView Grid.Column="1" Model="{Binding LineChartModel}" Margin="10" />
+        </Grid>
+    </Grid>
+</UserControl>

@@ -38,6 +38,8 @@ namespace TactIQ.Miscellaneous
         public interface IMatchRepository
         {
             IEnumerable<Model.Match> GetAllForOpponent(int opponentId);
+            IEnumerable<Model.Match> GetAllMatches();
+
             Model.Match? GetById(int id);
             int Add(Model.Match match);
             void Update(Model.Match match);

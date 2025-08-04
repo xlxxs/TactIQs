@@ -14,6 +14,9 @@
         <DataTemplate DataType="{x:Type vm:ProfileEditViewModel}">
             <views:ProfileEditUC />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:AnalysisViewModel}">
+            <views:AnalysisUC />
+        </DataTemplate>
     </Window.Resources>
 
     <Grid>
@@ -38,7 +41,7 @@
                             <TextBlock x:Name="Label_Gegner" Text="Gegnerprofile" Foreground="White" Margin="10,0" Visibility="Collapsed"/>
                         </StackPanel>
                     </Button>
-                    <Button Tag="Anylyse" Click="NavButton_Click" Style="{StaticResource NavButtonStyle}" Margin="5">
+                    <Button Tag="Analyse" Click="NavButton_Click" Style="{StaticResource NavButtonStyle}" Margin="5">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="📈" FontSize="16" Margin="5,0"/>
                             <TextBlock x:Name="Label_Analyse" Text="Analyse" Foreground="White" Margin="10,0" Visibility="Collapsed"/>

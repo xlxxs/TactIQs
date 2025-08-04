@@ -38,6 +38,31 @@ namespace TactIQ.Miscellaneous.SQLite
             return list;
         }
 
+        public IEnumerable<Match> GetAllMatches()
+        {
+            var list = new List<Match>();
+            using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
+            conn.Open();
+            using var cmd = new SQLiteCommand("SELECT Id, OpponentId, MatchDate, Result, Competition, IsWin, Notes, Marked FROM Match", conn);
+
+            using var r = cmd.ExecuteReader();
+            while (r.Read())
+            {
+                list.Add(new Match
+                {
+                    Id = r.GetInt32(0),
+                    OpponentId = r.GetInt32(1),
+                    Date = ParseDateSafe(r, 2),
+                    Result = r.IsDBNull(3) ? "" : r.GetString(3),
+                    Competition = r.IsDBNull(4) ? "" : r.GetString(4),
+                    IsWin = r.GetBoolean(5),
+                    Notes = r.IsDBNull(6) ? "" : r.GetString(6),
+                    Marked = r.HasRows && r.GetBoolean(7)
+                });
+            }
+            return list;
+        }
+
         public Match? GetById(int id)
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
