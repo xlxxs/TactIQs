@@ -2,25 +2,89 @@
 using OxyPlot.Series;
 using OxyPlot.Axes;
 using System.Collections.ObjectModel;
-using static TactIQ.Miscellaneous.Interfaces;
-using TactIQ.Model;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using TactIQ.Model;
+using static TactIQ.Miscellaneous.Interfaces;
 
 namespace TactIQ.ViewModels;
+
 public class AnalysisViewModel : INotifyPropertyChanged
 {
-    public ObservableCollection<Match> LastMatches { get; set; }
-    public PlotModel PieChartModel { get; set; }
-    public PlotModel LineChartModel { get; set; }
+    private readonly IMatchRepository _matchRepo;
 
-    public AnalysisViewModel(INavigationService nav, IMatchRepository matchRepo)
+    public ObservableCollection<Match> LastMatches { get; set; } = new();
+    public ObservableCollection<Opponent> Opponents { get; set; }
+
+    private Opponent? _selectedOpponent;
+    public Opponent? SelectedOpponent
     {
-        var matches = matchRepo.GetAllMatches().OrderBy(m => m.Date ?? DateTime.MinValue).ToList();
+        get => _selectedOpponent;
+        set
+        {
+            _selectedOpponent = value;
+            OnPropertyChanged();
+            ApplyFilter();
+        }
+    }
 
-        LastMatches = new ObservableCollection<Match>(matches.OrderByDescending(m => m.Date).Take(5));
+    private DateTime? _fromDate;
+    public DateTime? FromDate
+    {
+        get => _fromDate;
+        set
+        {
+            _fromDate = value;
+            OnPropertyChanged();
+            ApplyFilter();
+        }
+    }
 
-        // PieChart
+    private DateTime? _toDate;
+    public DateTime? ToDate
+    {
+        get => _toDate;
+        set
+        {
+            _toDate = value;
+            OnPropertyChanged();
+            ApplyFilter();
+        }
+    }
+
+    public PlotModel PieChartModel { get; set; } = new();
+    public PlotModel LineChartModel { get; set; } = new();
+
+    private List<Match> _allMatches;
+
+    public AnalysisViewModel(INavigationService nav, IMatchRepository matchRepo, IOpponentRepository opponentRepo)
+    {
+        _matchRepo = matchRepo;
+        _allMatches = matchRepo.GetAllMatches().OrderBy(m => m.Date ?? DateTime.MinValue).ToList();
+
+        Opponents = new ObservableCollection<Opponent>(opponentRepo.GetAll().OrderBy(o => o.Name));
+
+        ApplyFilter();
+    }
+
+    private void ApplyFilter()
+    {
+        var filtered = _allMatches.Where(m =>
+            (SelectedOpponent == null || m.OpponentId == SelectedOpponent.Id) &&
+            (!FromDate.HasValue || (m.Date ?? DateTime.MinValue) >= FromDate.Value) &&
+            (!ToDate.HasValue || (m.Date ?? DateTime.MinValue) <= ToDate.Value)
+        ).ToList();
+
+        LastMatches.Clear();
+        foreach (var m in filtered.OrderByDescending(m => m.Date).Take(5))
+            LastMatches.Add(m);
+
+        UpdateCharts(filtered);
+    }
+
+    private void UpdateCharts(List<Match> matches)
+    {
+        // Pie Chart
         var wins = matches.Count(m => m.IsWin);
         var losses = matches.Count - wins;
 
@@ -36,10 +100,11 @@ public class AnalysisViewModel : INotifyPropertyChanged
         pieSeries.Slices.Add(new PieSlice("Niederlagen", losses) { Fill = OxyColors.Red });
         pieModel.Series.Add(pieSeries);
         PieChartModel = pieModel;
+        OnPropertyChanged(nameof(PieChartModel));
 
-        // LineChart
+        // Line Chart
         var lineModel = new PlotModel { Title = "Siegquote im Zeitverlauf" };
-        lineModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Siegquote" });
+        lineModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Siegquote", Minimum = 0, Maximum = 1 });
         lineModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Spielnummer" });
 
         var series = new LineSeries { MarkerType = MarkerType.Circle };
@@ -52,6 +117,7 @@ public class AnalysisViewModel : INotifyPropertyChanged
         }
         lineModel.Series.Add(series);
         LineChartModel = lineModel;
+        OnPropertyChanged(nameof(LineChartModel));
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

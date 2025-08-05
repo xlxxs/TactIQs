@@ -17,6 +17,9 @@
         <DataTemplate DataType="{x:Type vm:AnalysisViewModel}">
             <views:AnalysisUC />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ExportViewModel}">
+            <views:ExportUC />
+        </DataTemplate>
     </Window.Resources>
 
     <Grid>

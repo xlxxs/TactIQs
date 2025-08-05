@@ -34,7 +34,28 @@ namespace TactIQ.Miscellaneous.SQLite
 
             return list;
         }
+        public IEnumerable<Note> GetAllNotes()
+        {
+            var list = new List<Note>();
+            using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
+            conn.Open();
+            using var cmd = new SQLiteCommand("SELECT Id, OpponentId, Content, Type, Marked FROM Note", conn);
 
+            using var r = cmd.ExecuteReader();
+            while (r.Read())
+            {
+                list.Add(new Note
+                {
+                    Id = r.GetInt32(0),
+                    OpponentId = r.GetInt32(1),
+                    Content = r.IsDBNull(2) ? "" : r.GetString(2),
+                    Type = r.IsDBNull(3) ? "" : r.GetString(3),
+                    Marked = r.HasRows && r.GetBoolean(4)
+                });
+            }
+
+            return list;
+        }
         public Note? GetById(int id)
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");

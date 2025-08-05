@@ -43,6 +43,9 @@ namespace TactIQ
 
         SqliteOpponentRepository opponentRepo;
         SqliteMatchRepository matchRepo;
+        SqliteNotesRepository noteRepo;
+
+
         NavigationService nav;
 
         public MainWindow()
@@ -58,6 +61,7 @@ namespace TactIQ
 
             opponentRepo = new SqliteOpponentRepository();
             matchRepo = new SqliteMatchRepository();
+            noteRepo = new SqliteNotesRepository();
 
             nav = new NavigationService(vm => _mainVM.CurrentViewModel = vm);
 
@@ -104,12 +108,12 @@ namespace TactIQ
                     break;
                 case "Analyse":
                     this.Title = "Analyse";
-                    var analysisVM = new AnalysisViewModel(nav, matchRepo);
+                    var analysisVM = new AnalysisViewModel(nav, matchRepo, opponentRepo);
                     _mainVM.CurrentViewModel = analysisVM;
                     break;
                 case "Export":
                     this.Title = "Export";
-                    var vm = new OpponentProfilesViewModel(nav, opponentRepo);
+                    var vm = new ExportViewModel(nav, opponentRepo, matchRepo, noteRepo);
                     _mainVM.CurrentViewModel = vm;
                     break;
                 case "Expand":

@@ -29,6 +29,7 @@ namespace TactIQ.Miscellaneous
         public interface INoteRepository
         {
             IEnumerable<Model.Note> GetAllForOpponent(int opponentId);
+            IEnumerable<Model.Note> GetAllNotes();
             Model.Note? GetById(int id);
             int Add(Model.Note note);
             void Update(Model.Note note);
