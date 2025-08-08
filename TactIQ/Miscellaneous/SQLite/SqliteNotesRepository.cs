@@ -98,7 +98,7 @@ namespace TactIQ.Miscellaneous.SQLite
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
             conn.Open();
-            using var cmd = new SQLiteCommand("UPDATE Note SET OpponnentId=@opponentId, Content=@content, Type=@type, Marked = @marked, Category = @category WHERE Id=@id", conn);
+            using var cmd = new SQLiteCommand("UPDATE Note SET OpponentId=@opponentId, Content=@content, Type=@type, Marked = @marked, Category = @category WHERE Id=@id", conn);
 
             cmd.Parameters.AddWithValue("@id", note.Id);
             cmd.Parameters.AddWithValue("@opponentId", note.OpponentId);

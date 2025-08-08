@@ -9,45 +9,42 @@ namespace TactIQ.ViewModels
 {
     public class NoteEditViewModel : INotifyPropertyChanged
     {
-        private readonly INoteRepository _repo;
-        private readonly IOpponentRepository _opponentRepo;
+        private readonly INoteRepository _noteRepo;
 
-        private readonly INavigationService _nav;
         public IDialogCloser? DialogCloser { get; set; }
 
-        public int Id { get; }
+        private int _id { get; }
 
-        public int _opponentId;
+        private int _opponentId;
         public int OpponentId { get => _opponentId; set { _opponentId = value; OnPropertyChanged(); } }
 
-        public string _content;
+        private string _content;
         public string Content { get => _content; set { _content = value; OnPropertyChanged(); } }
 
-        public string _type;
+        private string _type;
         public string Type { get => _type; set { _type = value; OnPropertyChanged(); } }
 
-        public string _category;
+        private string _category;
         public string Category { get => _category; set { _category = value; OnPropertyChanged(); } }
 
-        public bool _isMarked;
+        private bool _isMarked;
         public bool IsMarked { get => _isMarked; set { _isMarked = value; OnPropertyChanged(); } }
 
         public ICommand SaveCommand { get; }
         public Action? OnSaved { get; set; } 
 
-        public NoteEditViewModel(INavigationService nav, INoteRepository repo, Note note)
+        public NoteEditViewModel(INoteRepository repo, Note note)
         {
-            _nav = nav;
-            _repo = repo;
+            _noteRepo = repo;
 
             _opponentId = note.OpponentId;
 
             if (note.Id != 0)
             {
-                Id = note.Id;
-                _content = note.Content;
-                _category = note.Category;
-                _type = note.Type;
+                _id = note.Id;
+                _content = note.Content ?? String.Empty;
+                _category = note.Category ?? String.Empty;
+                _type = note.Type ?? String.Empty;
             }
 
             SaveCommand = new RelayCommand(_ => Save());
@@ -56,13 +53,13 @@ namespace TactIQ.ViewModels
 
         private void Save()
         {
-            if (Id == 0 || _repo.GetById(Id) == null)
+            if (_id == 0 || _noteRepo.GetById(_id) == null)
             {
-                _repo.Add(new Note { Content = _content, Category = _category.Replace("System.Windows.Controls.ComboBoxItem: ", ""), OpponentId = _opponentId, Type = _type.Replace("System.Windows.Controls.ComboBoxItem: ", ""), Marked = _isMarked });
+                _noteRepo.Add(new Note { Content = _content, Category = _category.Replace("System.Windows.Controls.ComboBoxItem: ", ""), OpponentId = _opponentId, Type = _type.Replace("System.Windows.Controls.ComboBoxItem: ", ""), Marked = _isMarked });
             }
             else
             {
-                _repo.Update(new Note { Id = Id, Content = _content, Category = _category.Replace("System.Windows.Controls.ComboBoxItem: ", ""), OpponentId = _opponentId, Type = _type.Replace("System.Windows.Controls.ComboBoxItem: ", ""), Marked = _isMarked });
+                _noteRepo.Update(new Note { Id = _id, Content = _content, Category = _category.Replace("System.Windows.Controls.ComboBoxItem: ", ""), OpponentId = _opponentId, Type = _type.Replace("System.Windows.Controls.ComboBoxItem: ", ""), Marked = _isMarked });
             }
 
             OnSaved?.Invoke();

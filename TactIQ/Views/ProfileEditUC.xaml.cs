@@ -30,7 +30,7 @@ namespace TactIQ.Views
         {
             if (DataContext is ProfileEditViewModel parentVm)
             {
-                var vm = new MatchEditViewModel(parentVm._nav, parentVm._matchRepo, new Model.Match { Date=DateTime.Now, OpponentId = parentVm.Id});
+                var vm = new MatchEditViewModel(parentVm._matchRepo, new Model.Match { Date=DateTime.Now, OpponentId = parentVm.Id});
                 vm.OnSaved = () => parentVm.LoadMatchesCommand.Execute(null);
 
                 var popup = new NewMatchWindow(vm); 
@@ -44,7 +44,7 @@ namespace TactIQ.Views
         {
             if (DataContext is ProfileEditViewModel parentVm)
             {
-                var vm = new NoteEditViewModel(parentVm._nav, parentVm._notesRepo, new Model.Note { OpponentId = parentVm.Id });
+                var vm = new NoteEditViewModel(parentVm._notesRepo, new Model.Note { OpponentId = parentVm.Id });
 
                 vm.OnSaved = () => parentVm.LoadNotesCommand.Execute(null);
 
@@ -59,7 +59,7 @@ namespace TactIQ.Views
         {
             if (DataContext is ProfileEditViewModel parentVm && parentVm.SelectedNote != null)
             {
-                var vm = new NoteEditViewModel(parentVm._nav, parentVm._notesRepo, parentVm.SelectedNote);
+                var vm = new NoteEditViewModel(parentVm._notesRepo, parentVm.SelectedNote);
 
                 var popup = new NewNoteWindow(vm);
                 popup.Owner = Window.GetWindow(this);
@@ -75,7 +75,7 @@ namespace TactIQ.Views
         {
             if (DataContext is ProfileEditViewModel parentVm && parentVm.SelectedMatch != null)
             {
-                var vm = new MatchEditViewModel(parentVm._nav, parentVm._matchRepo, parentVm.SelectedMatch);
+                var vm = new MatchEditViewModel(parentVm._matchRepo, parentVm.SelectedMatch);
 
                 var popup = new NewMatchWindow(vm);
                 popup.Owner = Window.GetWindow(this);

@@ -54,15 +54,15 @@ namespace TactIQ.ViewModels
             }
         }
         public ICommand LoadMatchesCommand { get; }
-        public ObservableCollection<Match> AllMatches { get; } = new();
-
         public ICommand LoadNotesCommand { get; }
-        public ObservableCollection<Note> AllNotes { get; } = new();
+        public ICommand SaveCommand { get; }
+        public ObservableCollection<Match> AllMatches { get; } = new();
         public ObservableCollection<Match> RecentMatches { get; } = new();
+
+        public ObservableCollection<Note> AllNotes { get; } = new();
         public ObservableCollection<Note> RecentStrengths { get; } = new();
         public ObservableCollection<Note> RecentWeaknesses { get; } = new();
         public ObservableCollection<Note> RecentMisc { get; } = new();
-        public ICommand SaveCommand { get; }
 
         public ProfileEditViewModel(INavigationService nav,IOpponentRepository repo, Opponent opponent)
         {

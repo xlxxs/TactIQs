@@ -10,21 +10,20 @@ namespace TactIQ.ViewModels
 {
     public class MatchEditViewModel: INotifyPropertyChanged
     {
-        private readonly IMatchRepository _repo;
-        private readonly IOpponentRepository _opponentRepo;
+        private readonly IMatchRepository _matchRepo;
 
-        private readonly INavigationService _nav;
         public IDialogCloser? DialogCloser { get; set; }
 
-        public int Id { get; }
+        private int _id;
 
         private DateTime _date;
         public DateTime Date { get => _date; set { _date = value; OnPropertyChanged(); } }
 
         private bool _isWin;
         public bool IsWin { get => _isWin; set { _isWin = value; OnPropertyChanged(); } }
-        private bool _marked;
-        public bool Marked { get => _marked; set { _marked = value; OnPropertyChanged(); } }
+
+        private bool _isMarked;
+        public bool Marked { get => _isMarked; set { _isMarked = value; OnPropertyChanged(); } }
 
         private int _opponentId;
         public int OpponentId { get => _opponentId; set { _opponentId = value; OnPropertyChanged(); } }
@@ -40,22 +39,21 @@ namespace TactIQ.ViewModels
         public ICommand SaveCommand { get; }
         public Action? OnSaved { get; set; }
 
-        public MatchEditViewModel(INavigationService nav, IMatchRepository repo, Match match)
+        public MatchEditViewModel(IMatchRepository repo, Match match)
         {
-            _nav = nav;
-            _repo = repo;
+            _matchRepo = repo;
             
             _date = match.Date.HasValue ? match.Date.Value : DateTime.Now;
             _opponentId = match.OpponentId;
 
             if(match.Id != 0)
             {
-                Id = match.Id;
+                _id = match.Id;
                 _competition = match.Competition;
                 _isWin = match.IsWin;
                 _result = match.Result;
                 _notes = match.Notes;
-                _marked = match.Marked;
+                _isMarked = match.Marked;
             }
 
             SaveCommand = new RelayCommand(_ => Save());
@@ -98,13 +96,13 @@ namespace TactIQ.ViewModels
                 return;
             }
 
-            if (Id == 0 || _repo.GetById(Id) == null)
+            if (_id == 0 || _matchRepo.GetById(_id) == null)
             {
-                _repo.Add(new Match { Competition = _competition, Date = _date, IsWin = _isWin, Notes = _notes, OpponentId = _opponentId, Result = _result, Marked = _marked });
+                _matchRepo.Add(new Match { Competition = _competition, Date = _date, IsWin = _isWin, Notes = _notes, OpponentId = _opponentId, Result = _result, Marked = _isMarked });
             }
             else
             {
-                _repo.Update(new Match { Id = Id, Competition = _competition, Date = _date, IsWin = _isWin, Notes = _notes, OpponentId = _opponentId, Result = _result });
+                _matchRepo.Update(new Match { Id = _id, Competition = _competition, Date = _date, IsWin = _isWin, Notes = _notes, OpponentId = _opponentId, Result = _result });
             }
 
             OnSaved?.Invoke();

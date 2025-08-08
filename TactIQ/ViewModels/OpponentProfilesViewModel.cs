@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using TactIQ.Miscellaneous;
 using TactIQ.Model;
 using static TactIQ.Miscellaneous.Interfaces;
 
@@ -11,7 +12,6 @@ namespace TactIQ.ViewModels
     {
         private readonly INavigationService _nav;
         private readonly IOpponentRepository _opponentRepo;
-        private readonly IMatchRepository _matchRepo;
 
         public ObservableCollection<Opponent> AllOpponents { get; } = new();
         public ObservableCollection<Opponent> FilteredOpponents { get; } = new();
@@ -133,17 +133,5 @@ namespace TactIQ.ViewModels
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string? name = null)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-    }
-
-
-    public class RelayCommand : ICommand
-    {
-        private readonly Action<object?> _execute;
-        private readonly Predicate<object?>? _canExecute;
-        public RelayCommand(Action<object?> execute, Predicate<object?>? canExecute = null)
-        { _execute = execute; _canExecute = canExecute; }
-        public bool CanExecute(object? parameter) => _canExecute?.Invoke(parameter) ?? true;
-        public void Execute(object? parameter) => _execute(parameter);
-        public event EventHandler? CanExecuteChanged { add { CommandManager.RequerySuggested += value; } remove { CommandManager.RequerySuggested -= value; } }
     }
 }

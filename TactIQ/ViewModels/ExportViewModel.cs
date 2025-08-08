@@ -17,7 +17,6 @@ namespace TactIQ.ViewModels
 {
     public class ExportViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<string> Opponents { get; set; }
         public string? SelectedOpponent { get; set; }
 
         public bool ExportNotes { get; set; } = true;
@@ -30,21 +29,22 @@ namespace TactIQ.ViewModels
         private readonly IEnumerable<Match> _matches;
         private readonly Dictionary<int, Opponent> _opponentLookup;
 
+        private IOpponentRepository _opponentRepo;
+        private IMatchRepository _matchRepo;
+        private INoteRepository _noteRepo;
         public ICommand ExportCommand { get; }
 
-        public ExportViewModel(INavigationService nav, IOpponentRepository opponentRepo, IMatchRepository matchRepo, INoteRepository noteRepo)
+        public ExportViewModel(IOpponentRepository opponentRepo, IMatchRepository matchRepo, INoteRepository noteRepo)
         {
-            _notes = noteRepo.GetAllNotes();
-            _matches = matchRepo.GetAllMatches();
+            _opponentRepo = opponentRepo;
+            _matchRepo = matchRepo;
+            _noteRepo = noteRepo;
 
-            _opponentLookup = opponentRepo.GetAll()
+            _notes = _noteRepo.GetAllNotes();
+            _matches = _matchRepo.GetAllMatches();
+
+            _opponentLookup = _opponentRepo.GetAll()
                 .ToDictionary(o => o.Id);
-
-            Opponents = new ObservableCollection<string>(
-                _opponentLookup.Values
-                    .Select(o => $"{o.Name} ({o.Club})")
-                    .OrderBy(s => s)
-            );
 
             ExportCommand = new RelayCommand(_ => ExportToExcel());
         }

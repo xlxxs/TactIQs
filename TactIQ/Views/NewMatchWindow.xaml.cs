@@ -22,8 +22,6 @@ namespace TactIQ.Views
     /// </summary>
     public partial class NewMatchWindow : Window, IDialogCloser 
     {
-        public Match NewMatch { get; private set; }
-
         public NewMatchWindow(MatchEditViewModel vm)
         {
             InitializeComponent();

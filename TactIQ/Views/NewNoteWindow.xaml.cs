@@ -22,8 +22,6 @@ namespace TactIQ.Views
     /// </summary>
     public partial class NewNoteWindow : Window, IDialogCloser
     {
-        public Note NewNote { get; private set; }
-
         public NewNoteWindow(NoteEditViewModel vm)
         {
             InitializeComponent();

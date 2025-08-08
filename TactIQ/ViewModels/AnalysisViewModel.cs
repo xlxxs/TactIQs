@@ -12,9 +12,11 @@ namespace TactIQ.ViewModels;
 public class AnalysisViewModel : INotifyPropertyChanged
 {
     private readonly IMatchRepository _matchRepo;
+    private readonly IOpponentRepository _opponentRepository;
 
     public ObservableCollection<Match> LastMatches { get; set; } = new();
     public ObservableCollection<Opponent> Opponents { get; set; }
+    private List<Match> _allMatches;
 
     private Opponent? _selectedOpponent;
     public Opponent? SelectedOpponent
@@ -55,14 +57,15 @@ public class AnalysisViewModel : INotifyPropertyChanged
     public PlotModel PieChartModel { get; set; } = new();
     public PlotModel LineChartModel { get; set; } = new();
 
-    private List<Match> _allMatches;
 
-    public AnalysisViewModel(INavigationService nav, IMatchRepository matchRepo, IOpponentRepository opponentRepo)
+    public AnalysisViewModel(IMatchRepository matchRepo, IOpponentRepository opponentRepo)
     {
         _matchRepo = matchRepo;
-        _allMatches = matchRepo.GetAllMatches().OrderBy(m => m.Date ?? DateTime.MinValue).ToList();
+        _opponentRepository = opponentRepo;
 
-        Opponents = new ObservableCollection<Opponent>(opponentRepo.GetAll().OrderBy(o => o.Name));
+        _allMatches = _matchRepo.GetAllMatches().OrderBy(m => m.Date ?? DateTime.MinValue).ToList();
+
+        Opponents = new ObservableCollection<Opponent>(_opponentRepository.GetAll().OrderBy(o => o.Name));
 
         ApplyFilter();
     }
@@ -71,8 +74,8 @@ public class AnalysisViewModel : INotifyPropertyChanged
     {
         var filtered = _allMatches.Where(m =>
             (SelectedOpponent == null || m.OpponentId == SelectedOpponent.Id) &&
-            (!FromDate.HasValue || (m.Date ?? DateTime.MinValue) >= FromDate.Value) &&
-            (!ToDate.HasValue || (m.Date ?? DateTime.MinValue) <= ToDate.Value)
+            (!_fromDate.HasValue || (m.Date ?? DateTime.MinValue) >= _fromDate.Value) &&
+            (!_toDate.HasValue || (m.Date ?? DateTime.MinValue) <= _toDate.Value)
         ).ToList();
 
         LastMatches.Clear();

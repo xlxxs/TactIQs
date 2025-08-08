@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access">
+  <Class Name="TactIQ.Miscellaneous.SQLite.SqliteMatchRepository">
+    <Position X="3.75" Y="11.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAYgAQAAgAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>Miscellaneous\SQLite\SqliteMatchRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TactIQ.Miscellaneous.SQLite.SqliteNotesRepository">
+    <Position X="3.75" Y="9" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAYAAQAAAAAAAAAAAAAAAAAAAAEAAQAAAAAAAAAAAIA=</HashCode>
+      <FileName>Miscellaneous\SQLite\SqliteNotesRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TactIQ.Miscellaneous.SQLite.SqliteOpponentRepository">
+    <Position X="3.75" Y="6.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAgAAAAAAAIA=</HashCode>
+      <FileName>Miscellaneous\SQLite\SqliteOpponentRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TactIQ.Miscellaneous.DatabaseBuilder">
+    <Position X="0.5" Y="2.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AIAAAABAABAAAQIAAAAAAAAEAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Miscellaneous\DatabaseBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TactIQ.Miscellaneous.Interfaces">
+    <Position X="0.5" Y="5.25" Width="3" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Interface Name="TactIQ.Miscellaneous.Interfaces.INavigationService" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Miscellaneous\Interfaces.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Interface>
+      <Interface Name="TactIQ.Miscellaneous.Interfaces.IDialogCloser" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Miscellaneous\Interfaces.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Interface>
+      <Interface Name="TactIQ.Miscellaneous.Interfaces.IOpponentRepository">
+        <TypeIdentifier>
+          <NewMemberFileName>Miscellaneous\Interfaces.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Interface>
+      <Interface Name="TactIQ.Miscellaneous.Interfaces.INoteRepository">
+        <TypeIdentifier>
+          <NewMemberFileName>Miscellaneous\Interfaces.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Interface>
+      <Interface Name="TactIQ.Miscellaneous.Interfaces.IMatchRepository">
+        <TypeIdentifier>
+          <NewMemberFileName>Miscellaneous\Interfaces.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Interface>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Miscellaneous\Interfaces.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TactIQ.Model.Match">
+    <Position X="21" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAiAAgAAAAAAAAAAAAAAUQAAACAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Match.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TactIQ.Model.Note">
+    <Position X="22.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAgAAAAAAACAAAUAAAAAAAAAAAQAAAAAACAA=</HashCode>
+      <FileName>Model\Note.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TactIQ.Model.Opponent">
+    <Position X="24.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAQQAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Model\Opponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TactIQ.ViewModels.AnalysisViewModel" BaseTypeListCollapsed="true">
+    <Position X="18.75" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAIAAgAhAAAIAFAQAAAgAAAAAAAAASABIABABA=</HashCode>
+      <FileName>ViewModels\AnalysisViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TactIQ.ViewModels.ExportViewModel" BaseTypeListCollapsed="true">
+    <Position X="14.75" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>CAAQAAAAAAAEBAAAIABAIAAAgAAAAAEACARABkABAAA=</HashCode>
+      <FileName>ViewModels\ExportViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TactIQ.ViewModels.MainViewModel" BaseTypeListCollapsed="true">
+    <Position X="17.5" Y="9" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAEAAIAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\MainViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TactIQ.ViewModels.MatchEditViewModel" BaseTypeListCollapsed="true">
+    <Position X="10.75" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>QAAyAMgAAAAAAAACJIAgQWWAgCCAAAABAAQAAAAEAAE=</HashCode>
+      <FileName>ViewModels\MatchEditViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TactIQ.ViewModels.NoteEditViewModel" BaseTypeListCollapsed="true">
+    <Position X="7" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAIAAAgEABAQBIIAAQFGAgCAAAAAAAQAAAAAECAE=</HashCode>
+      <FileName>ViewModels\NoteEditViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TactIQ.ViewModels.OpponentProfilesViewModel" BaseTypeListCollapsed="true">
+    <Position X="23.75" Y="1.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>gEgAAALAAABCCAAAIAEAQAQAgCAAEAAIAAQAAMEAAAE=</HashCode>
+      <FileName>ViewModels\OpponentProfilesViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TactIQ.ViewModels.ProfileEditViewModel" BaseTypeListCollapsed="true">
+    <Position X="10.75" Y="9" Width="2" />
+    <TypeIdentifier>
+      <HashCode>BAACIICAAABSAARAYAEAAaQAgCAAAAAgAAQAAJSEAAE=</HashCode>
+      <FileName>ViewModels\ProfileEditViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TactIQ.Views.AnalysisUC" BaseTypeListCollapsed="true">
+    <Position X="17" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\AnalysisUC.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TactIQ.Views.ExportUC" BaseTypeListCollapsed="true">
+    <Position X="13" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\ExportUC.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TactIQ.Views.NewMatchWindow" BaseTypeListCollapsed="true">
+    <Position X="9" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Views\NewMatchWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TactIQ.Views.NewNoteWindow" BaseTypeListCollapsed="true">
+    <Position X="5" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Views\NewNoteWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TactIQ.Views.OpponentProfilesUC" BaseTypeListCollapsed="true">
+    <Position X="21" Y="1.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\OpponentProfilesUC.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TactIQ.Views.ProfileEditUC" BaseTypeListCollapsed="true">
+    <Position X="8" Y="9" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAIQAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Views\ProfileEditUC.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TactIQ.MainWindow">
+    <Position X="15" Y="9" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IiAAgAAAAgABAAAAIAIAEQAogAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

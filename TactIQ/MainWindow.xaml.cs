@@ -41,12 +41,12 @@ namespace TactIQ
         public bool isSidebarCollapsed => !isSidebarExpanded;
         private readonly MainViewModel _mainVM;
 
-        SqliteOpponentRepository opponentRepo;
-        SqliteMatchRepository matchRepo;
-        SqliteNotesRepository noteRepo;
+        private SqliteOpponentRepository _opponentRepo;
+        private SqliteMatchRepository _matchRepo;
+        private SqliteNotesRepository _noteRepo;
 
 
-        NavigationService nav;
+        private NavigationService nav;
 
         public MainWindow()
         {
@@ -59,14 +59,14 @@ namespace TactIQ
             _mainVM = new MainViewModel();
             DataContext = _mainVM;
 
-            opponentRepo = new SqliteOpponentRepository();
-            matchRepo = new SqliteMatchRepository();
-            noteRepo = new SqliteNotesRepository();
+            _opponentRepo = new SqliteOpponentRepository();
+            _matchRepo = new SqliteMatchRepository();
+            _noteRepo = new SqliteNotesRepository();
 
             nav = new NavigationService(vm => _mainVM.CurrentViewModel = vm);
 
             // Startseite: Gegnerliste
-            _mainVM.CurrentViewModel = new OpponentProfilesViewModel(nav, opponentRepo);
+            _mainVM.CurrentViewModel = new OpponentProfilesViewModel(nav, _opponentRepo);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -74,21 +74,6 @@ namespace TactIQ
         protected void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
-        private void Sidebar_MouseEnter(object sender, MouseEventArgs e)
-        {
-            Sidebar.Width = 160;
-            Label_Gegner.Visibility = Visibility.Visible;
-            Label_Analyse.Visibility = Visibility.Visible;
-            Label_Export.Visibility = Visibility.Visible;
-        }
-
-        private void Sidebar_MouseLeave(object sender, MouseEventArgs e)
-        {
-            Sidebar.Width = 60;
-            Label_Gegner.Visibility = Visibility.Collapsed;
-            Label_Analyse.Visibility = Visibility.Collapsed;
-            Label_Export.Visibility = Visibility.Collapsed;
         }
 
         private void NavButton_Click(object sender, RoutedEventArgs e)
@@ -103,17 +88,17 @@ namespace TactIQ
             {
                 case "Gegner":
                     this.Title = "Gegnerprofile";
-                    var opponentVM = new OpponentProfilesViewModel(nav, opponentRepo);
+                    var opponentVM = new OpponentProfilesViewModel(nav, _opponentRepo);
                     _mainVM.CurrentViewModel = opponentVM;
                     break;
                 case "Analyse":
                     this.Title = "Analyse";
-                    var analysisVM = new AnalysisViewModel(nav, matchRepo, opponentRepo);
+                    var analysisVM = new AnalysisViewModel(_matchRepo, _opponentRepo);
                     _mainVM.CurrentViewModel = analysisVM;
                     break;
                 case "Export":
                     this.Title = "Export";
-                    var vm = new ExportViewModel(nav, opponentRepo, matchRepo, noteRepo);
+                    var vm = new ExportViewModel(_opponentRepo, _matchRepo, _noteRepo);
                     _mainVM.CurrentViewModel = vm;
                     break;
                 case "Expand":
