@@ -6,8 +6,15 @@ using static TactIQ.Miscellaneous.Interfaces;
 
 namespace TactIQ.Miscellaneous.SQLite
 {
+    /// <summary>
+    /// Klasse für den Zugriff auf die Gegner-Daten.
+    /// </summary>
     public class SqliteOpponentRepository : IOpponentRepository
     {
+        /// <summary>
+        /// Ruft alle Gegner ab.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<Opponent> GetAll()
         {
             var list = new List<Opponent>();
@@ -28,6 +35,11 @@ namespace TactIQ.Miscellaneous.SQLite
             return list;
         }
 
+        /// <summary>
+        /// Ruft einen Gegner anhand der Id ab.
+        /// </summary>
+        /// <param name="id">Gegner-Id</param>
+        /// <returns></returns>
         public Opponent? GetById(int id)
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
@@ -48,6 +60,12 @@ namespace TactIQ.Miscellaneous.SQLite
             return null;
         }
 
+        /// <summary>
+        /// Fügt einen neuen Gegner hinzu.
+        /// </summary>
+        /// <param name="name">Gegnername</param>
+        /// <param name="club">Gegnerverein</param>
+        /// <returns></returns>
         public int Add(string name, string club)
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
@@ -58,6 +76,10 @@ namespace TactIQ.Miscellaneous.SQLite
             return (int)(long)cmd.ExecuteScalar()!;
         }
 
+        /// <summary>
+        /// Aktualisiert einen bestehenden Gegner.
+        /// </summary>
+        /// <param name="opponent"></param>
         public void Update(Opponent opponent)
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
@@ -70,6 +92,10 @@ namespace TactIQ.Miscellaneous.SQLite
             cmd.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Löscht einen Gegner anhand der Id.
+        /// </summary>
+        /// <param name="id"></param>
         public void Delete(int id)
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");

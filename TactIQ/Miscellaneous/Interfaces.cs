@@ -8,16 +8,25 @@ namespace TactIQ.Miscellaneous
 {
     public class Interfaces
     {
+        /// <summary>
+        /// Schnittstelle für den Navigationsdienst, der die Navigation zwischen ViewModels ermöglicht.
+        /// </summary>
         public interface INavigationService
         {
             void NavigateTo(object viewModel);
         }
 
+        /// <summary>
+        /// Schnittstelle für den Dialog-Manager, der das Schließen von Dialogen ermöglicht.
+        /// </summary>
         public interface IDialogCloser
         {
             void Close(bool? dialogResult = true);
         }
 
+        /// <summary>
+        /// Schnittstelle für das Gegner-Repository.
+        /// </summary>
         public interface IOpponentRepository
         {
             IEnumerable<Model.Opponent> GetAll();
@@ -26,6 +35,10 @@ namespace TactIQ.Miscellaneous
             void Update(Model.Opponent opponent);
             void Delete(int id);
         }
+
+        /// <summary>
+        /// Schnittstelle für das Notiz-Repository.
+        /// </summary>
         public interface INoteRepository
         {
             IEnumerable<Model.Note> GetAllForOpponent(int opponentId);
@@ -36,11 +49,13 @@ namespace TactIQ.Miscellaneous
             void Delete(int id);
         }
 
+        /// <summary>
+        /// Schnittstelle für das Match-Repository.
+        /// </summary>
         public interface IMatchRepository
         {
             IEnumerable<Model.Match> GetAllForOpponent(int opponentId);
             IEnumerable<Model.Match> GetAllMatches();
-
             Model.Match? GetById(int id);
             int Add(Model.Match match);
             void Update(Model.Match match);

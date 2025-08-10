@@ -7,6 +7,8 @@
              mc:Ignorable="d">
 
     <Border Padding="20" Background="#FFF" CornerRadius="10" BorderBrush="#DDD" BorderThickness="1">
+        
+        <!--Filter für die Analyse-->
         <DockPanel LastChildFill="True">
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10" DockPanel.Dock="Top" HorizontalAlignment="Left">
@@ -23,6 +25,7 @@
                 <DatePicker SelectedDate="{Binding ToDate}" />
             </StackPanel>
 
+            <!--Anzeige der letzten Matches-->    
             <GroupBox Header="Letzte Matches" DockPanel.Dock="Top" Margin="0,0,0,15">
                 <DataGrid ItemsSource="{Binding LastMatches}"
                           AutoGenerateColumns="False"
@@ -41,6 +44,7 @@
                 </DataGrid>
             </GroupBox>
 
+            <!--Anzeige der Diagramme´für Siegquote und -->
             <GroupBox Header="Auswertung">
                 <Grid Margin="10">
                     <Grid.ColumnDefinitions>

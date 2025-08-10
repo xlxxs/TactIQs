@@ -97,7 +97,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-
+                    <!--Matches - Tab-->
                     <TabItem Header="Matches">
                         <Grid Margin="0,10,0,0">
                             <Grid.RowDefinitions>
@@ -105,6 +105,7 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
+                            <!--Grid zur Anzeige der Matches-->
                             <DataGrid Grid.Row="0"
                                       AutoGenerateColumns="False"
                                       HeadersVisibility="Column"
@@ -142,6 +143,8 @@
                                     BorderThickness="1" Click="NewMatch_Click"/>
                         </Grid>
                     </TabItem>
+
+                    <!--Notizen - Tab-->
                     <TabItem Header="Notizen">
                         <Grid Margin="0,10,0,0">
                             <Grid.RowDefinitions>
@@ -149,6 +152,7 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
+                            <!-- Grid zur Anzeige der Notizen -->
                             <DataGrid Grid.Row="0" 
                                       AutoGenerateColumns="False" 
                                       HeadersVisibility="Column"

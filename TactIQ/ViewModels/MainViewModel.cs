@@ -3,8 +3,12 @@ using System.Runtime.CompilerServices;
 
 namespace TactIQ.ViewModels
 {
+    /// <summary>
+    /// ViewModel für die Hauptansicht der Anwendung.
+    /// </summary>
     public class MainViewModel : INotifyPropertyChanged
     {
+        // ViewModel für die verschiedenen Ansichten
         private object? _currentViewModel;
         public object? CurrentViewModel
         {

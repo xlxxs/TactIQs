@@ -15,65 +15,95 @@ using static TactIQ.Miscellaneous.Interfaces;
 
 namespace TactIQ.ViewModels
 {
+    /// <summary>
+    /// ViewModel für den Export von Notizen und Matches in eine Excel-Datei.
+    /// </summary>
     public class ExportViewModel : INotifyPropertyChanged
     {
+        // Name des Gegners, der für den Export ausgewählt wurde.
         public string? SelectedOpponent { get; set; }
 
+        // Eigenschaften, die den Export von (markierten) Notizen und Matches steuern.
         public bool ExportNotes { get; set; } = true;
         public bool ExportMatches { get; set; } = true;
         public bool OnlyMarked { get; set; } = false;
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }
 
+        // Listen für Notizen und Matches, die aus der Datenbank geladen werden.
         private readonly IEnumerable<Note> _notes;
         private readonly IEnumerable<Match> _matches;
         private readonly Dictionary<int, Opponent> _opponentLookup;
 
+        // Repositories für den Zugriff auf die Daten.
         private IOpponentRepository _opponentRepo;
         private IMatchRepository _matchRepo;
         private INoteRepository _noteRepo;
+
+        // Command für den Exportvorgang.
         public ICommand ExportCommand { get; }
 
+        /// <summary>
+        /// Konstruktor für das ExportViewModel, der die Repositories initialisiert und die Daten lädt.
+        /// </summary>
+        /// <param name="opponentRepo"></param>
+        /// <param name="matchRepo"></param>
+        /// <param name="noteRepo"></param>
         public ExportViewModel(IOpponentRepository opponentRepo, IMatchRepository matchRepo, INoteRepository noteRepo)
         {
+            // Repositories initialisieren
             _opponentRepo = opponentRepo;
             _matchRepo = matchRepo;
             _noteRepo = noteRepo;
 
+            // Daten aus den Repositories laden
             _notes = _noteRepo.GetAllNotes();
             _matches = _matchRepo.GetAllMatches();
-
             _opponentLookup = _opponentRepo.GetAll()
                 .ToDictionary(o => o.Id);
 
+            // Command für den Export initialisieren
             ExportCommand = new RelayCommand(_ => ExportToExcel());
         }
 
+        /// <summary>
+        /// Methode zum Exportieren der Notizen und Matches in eine Excel-Datei.
+        /// </summary>
         private void ExportToExcel()
         {
+            // Überprüfen, ob mindestens eine Exportoption ausgewählt ist
             SaveFileDialog saveDialog = new SaveFileDialog
             {
                 Filter = "Excel Workbook|*.xlsx",
                 FileName = "TactIQ_Export"
             };
 
+            // Wenn keine Exportoption ausgewählt ist, eine Warnung anzeigen und return
             if (saveDialog.ShowDialog() != true)
                 return;
 
             using var workbook = new XLWorkbook();
 
+            // Überprüfen, ob mindestens eine Exportoption ausgewählt ist
+            // Wenn mindestens eine Option ausgewählt ist, die entsprechenden Daten exportieren
             if (ExportMatches)
                 ExportMatchesToSheet(workbook);
 
             if (ExportNotes)
                 ExportNotesToSheet(workbook);
 
+            // Speichern der Excel-Datei
             workbook.SaveAs(saveDialog.FileName);
             MessageBox.Show("Export erfolgreich!", "Export", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
+        /// <summary>
+        /// Methode zum Exportieren der Matches in ein Arbeitsblatt.
+        /// </summary>
+        /// <param name="workbook"></param>
         private void ExportMatchesToSheet(XLWorkbook workbook)
         {
+            // Header
             var ws = workbook.Worksheets.Add("Matches");
             ws.Cell(1, 1).Value = "Datum";
             ws.Cell(1, 2).Value = "Gegner";
@@ -82,25 +112,31 @@ namespace TactIQ.ViewModels
             ws.Cell(1, 5).Value = "Ergebnis";
             ws.Cell(1, 6).Value = "Sieg";
 
+            // Filter Matches basierend auf dem ausgewählten Gegner und den Datumsbereichen
             var filtered = _matches.Where(m =>
             {
+                // Überprüfen, ob der Gegner im Lookup vorhanden ist
                 if (!_opponentLookup.TryGetValue(m.OpponentId, out var opp))
                     return false;
 
                 var fullName = $"{opp.Name} ({opp.Club})";
 
+                // Filterbedingungen anwenden
                 return (string.IsNullOrEmpty(SelectedOpponent) || fullName == SelectedOpponent)
                     && (!OnlyMarked || m.Marked)
                     && (!FromDate.HasValue || m.Date >= FromDate)
                     && (!ToDate.HasValue || m.Date <= ToDate);
             }).ToList();
 
+
+            // Daten in das Arbeitsblatt schreiben
             for (int i = 0; i < filtered.Count; i++)
             {
                 var m = filtered[i];
                 var opp = _opponentLookup[m.OpponentId];
                 int row = i + 2;
 
+                // Zellen füllen
                 ws.Cell(row, 1).Value = m.Date?.ToString("dd.MM.yyyy");
                 ws.Cell(row, 2).Value = opp.Name;
                 ws.Cell(row, 3).Value = opp.Club;
@@ -130,8 +166,13 @@ namespace TactIQ.ViewModels
             ws.Columns().AdjustToContents();
         }
 
+        /// <summary>
+        /// Methode zum Exportieren der Notizen in ein Arbeitsblatt.
+        /// </summary>
+        /// <param name="workbook"></param>
         private void ExportNotesToSheet(XLWorkbook workbook)
         {
+            // Header
             var ws = workbook.Worksheets.Add("Notizen");
             ws.Cell(1, 1).Value = "Datum";
             ws.Cell(1, 2).Value = "Gegner";
@@ -140,25 +181,30 @@ namespace TactIQ.ViewModels
             ws.Cell(1, 5).Value = "Typ";
             ws.Cell(1, 6).Value = "Inhalt";
 
+            // Filter Notizen basierend auf dem ausgewählten Gegner und den Datumsbereichen
             var filtered = _notes.Where(n =>
             {
+                // Überprüfen, ob der Gegner im Lookup vorhanden ist
                 if (!_opponentLookup.TryGetValue(n.OpponentId, out var opp))
                     return false;
 
                 var fullName = $"{opp.Name} ({opp.Club})";
 
+                // Filterbedingungen anwenden
                 return (string.IsNullOrEmpty(SelectedOpponent) || fullName == SelectedOpponent)
                     && (!OnlyMarked || n.Marked)
                     && (!FromDate.HasValue || n.CreatedAt >= FromDate)
                     && (!ToDate.HasValue || n.CreatedAt <= ToDate);
             }).ToList();
 
+            // Daten in das Arbeitsblatt schreiben
             for (int i = 0; i < filtered.Count; i++)
             {
                 var n = filtered[i];
                 var opp = _opponentLookup[n.OpponentId];
                 int row = i + 2;
 
+                // Zellen füllen
                 ws.Cell(row, 1).Value = n.CreatedAt.ToString("dd.MM.yyyy");
                 ws.Cell(row, 2).Value = opp.Name;
                 ws.Cell(row, 3).Value = opp.Club;

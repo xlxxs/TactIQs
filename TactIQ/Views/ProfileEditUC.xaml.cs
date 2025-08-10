@@ -26,6 +26,11 @@ namespace TactIQ.Views
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Ereignis, wenn der Benutzer auf "Neues Match" klickt.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NewMatch_Click(object sender, RoutedEventArgs e)
         {
             if (DataContext is ProfileEditViewModel parentVm)
@@ -40,6 +45,11 @@ namespace TactIQ.Views
             }
         }
 
+        /// <summary>
+        /// Ereignis, wenn der Benutzer auf "Neue Notiz" klickt.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NewNote_Click(object sender, RoutedEventArgs e)
         {
             if (DataContext is ProfileEditViewModel parentVm)
@@ -54,7 +64,11 @@ namespace TactIQ.Views
             }
         }
 
-
+        /// <summary>
+        /// Ereignis, wenn der Benutzer eine Notiz doppelt anklickt, um sie zu bearbeiten.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NoteDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (DataContext is ProfileEditViewModel parentVm && parentVm.SelectedNote != null)
@@ -71,6 +85,11 @@ namespace TactIQ.Views
             }
         }
 
+        /// <summary>
+        /// Ereignis, wenn der Benutzer ein Match doppelt anklickt, um es zu bearbeiten.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MatchDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (DataContext is ProfileEditViewModel parentVm && parentVm.SelectedMatch != null)

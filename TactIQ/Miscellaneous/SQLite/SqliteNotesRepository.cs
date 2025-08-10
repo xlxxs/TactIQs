@@ -9,8 +9,16 @@ using static TactIQ.Miscellaneous.Interfaces;
 
 namespace TactIQ.Miscellaneous.SQLite
 {
+    /// <summary>
+    /// Klasse für den Zugriff auf die Notiz-Daten.
+    /// </summary>
     public class SqliteNotesRepository: INoteRepository
     {
+        /// <summary>
+        /// Ruft alle Notizen für einen bestimmten Gegner ab.
+        /// </summary>
+        /// <param name="opponentId">Gegner-Id</param>
+        /// <returns>Liste von Matches für bestimmtten Gegner</returns>
         public IEnumerable<Note> GetAllForOpponent(int opponentId)
         {
             var list = new List<Note>();
@@ -34,6 +42,11 @@ namespace TactIQ.Miscellaneous.SQLite
 
             return list;
         }
+
+        /// <summary>
+        /// Ruft alle Notizen ab.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<Note> GetAllNotes()
         {
             var list = new List<Note>();
@@ -56,6 +69,12 @@ namespace TactIQ.Miscellaneous.SQLite
 
             return list;
         }
+
+        /// <summary>
+        /// Ruft eine Notiz anhand ihrer Id ab.
+        /// </summary>
+        /// <param name="id">Notiz-Id</param>
+        /// <returns></returns>
         public Note? GetById(int id)
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
@@ -79,6 +98,11 @@ namespace TactIQ.Miscellaneous.SQLite
             return null;
         }
 
+        /// <summary>
+        /// Fügt eine neue Notiz hinzu.
+        /// </summary>
+        /// <param name="note"></param>
+        /// <returns></returns>
         public int Add(Note note)
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
@@ -94,6 +118,10 @@ namespace TactIQ.Miscellaneous.SQLite
             return (int)(long)cmd.ExecuteScalar()!;
         }
 
+        /// <summary>
+        /// Aktualisiert eine bestehende Notiz.
+        /// </summary>
+        /// <param name="note"></param>
         public void Update(Note note)
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
@@ -110,6 +138,10 @@ namespace TactIQ.Miscellaneous.SQLite
             cmd.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Löscht eine Notiz anhand ihrer Id.
+        /// </summary>
+        /// <param name="id">Notiz-Id</param>
         public void Delete(int id)
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");

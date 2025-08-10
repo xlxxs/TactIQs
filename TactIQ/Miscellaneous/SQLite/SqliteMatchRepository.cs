@@ -10,8 +10,16 @@ using static TactIQ.Miscellaneous.Interfaces;
 
 namespace TactIQ.Miscellaneous.SQLite
 {
+    /// <summary>
+    /// Klasse für den Zugriff auf die Match-Daten.
+    /// </summary>
     public class SqliteMatchRepository: IMatchRepository
     {
+        /// <summary>
+        /// Ruft alle Matches für einen bestimmten Gegner ab.
+        /// </summary>
+        /// <param name="opponentId">Id des Gegners</param>
+        /// <returns>Liste von Matches für Gegner-Id</returns>
         public IEnumerable<Match> GetAllForOpponent(int opponentId)
         {
             var list = new List<Match>();
@@ -38,6 +46,10 @@ namespace TactIQ.Miscellaneous.SQLite
             return list;
         }
 
+        /// <summary>
+        /// Ruft alle Matches ab.
+        /// </summary>
+        /// <returns>Liste aller Matches</returns>
         public IEnumerable<Match> GetAllMatches()
         {
             var list = new List<Match>();
@@ -63,6 +75,11 @@ namespace TactIQ.Miscellaneous.SQLite
             return list;
         }
 
+        /// <summary>
+        /// Ruft ein Match anhand der Id ab.
+        /// </summary>
+        /// <param name="id">Match-Id</param>
+        /// <returns>Match mit bestimmter Id</returns>
         public Match? GetById(int id)
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
@@ -87,6 +104,11 @@ namespace TactIQ.Miscellaneous.SQLite
             return null;
         }
 
+        /// <summary>
+        /// Fügt ein neues Match hinzu.
+        /// </summary>
+        /// <param name="match"></param>
+        /// <returns></returns>
         public int Add(Match match)
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
@@ -104,6 +126,10 @@ namespace TactIQ.Miscellaneous.SQLite
             return (int)(long)cmd.ExecuteScalar()!;
         }
 
+        /// <summary>
+        /// Aktualisiert ein bestehendes Match.
+        /// </summary>
+        /// <param name="match"></param>
         public void Update(Match match)
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
@@ -122,6 +148,10 @@ namespace TactIQ.Miscellaneous.SQLite
             cmd.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Löscht ein Match anhand der Id.
+        /// </summary>
+        /// <param name="id"></param>
         public void Delete(int id)
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
@@ -132,6 +162,12 @@ namespace TactIQ.Miscellaneous.SQLite
         }
 
         #region Helper
+        /// <summary>
+        /// Wandelt ein Datum aus der Datenbank in ein DateTime-Objekt um.
+        /// </summary>
+        /// <param name="r"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
         private DateTime ParseDateSafe(SQLiteDataReader r, int index)
         {
             if (r.IsDBNull(index))

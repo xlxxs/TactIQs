@@ -9,10 +9,16 @@ using System.Threading.Tasks;
 
 namespace TactIQ.Miscellaneous
 {
+    /// <summary>
+    /// Klasse zum Erstellen und Initialisieren der SQLite-Datenbank.
+    /// </summary>
     public static class DatabaseBuilder
     {
         private static string _databasePath;
 
+        /// <summary>
+        /// Metthode zum Initialisieren der Datenbank.
+        /// </summary>
         public static void Initialize()
         {
             string? assemblyDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -24,6 +30,9 @@ namespace TactIQ.Miscellaneous
             }
         }
 
+        /// <summary>
+        /// Methode zum Erstellen der SQLite-Datenbank und der erforderlichen Tabellen.
+        /// </summary>
         private static void CreateDatabase()
         {
             SQLiteConnection.CreateFile(_databasePath);
@@ -38,6 +47,10 @@ namespace TactIQ.Miscellaneous
             }
         }
 
+        /// <summary>
+        /// Methode zum Erstellen der Tabelle für Gegner.
+        /// </summary>
+        /// <param name="conn">SQLite Verbindung</param>
         private static void CreateOpponentTable(SQLiteConnection conn)
         {
             string sql = @"
@@ -50,6 +63,10 @@ namespace TactIQ.Miscellaneous
             new SQLiteCommand(sql, conn).ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Methode zum Erstellen der Tabelle für Matches.
+        /// </summary>
+        /// <param name="conn">SQLite Verbindung</param>
         private static void CreateMatchTable(SQLiteConnection conn)
         {
             string sql = @"
@@ -67,6 +84,10 @@ namespace TactIQ.Miscellaneous
             new SQLiteCommand(sql, conn).ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Methode zum Erstellen der Tabelle für Notizen.
+        /// </summary>
+        /// <param name="conn">SQLite Verbindung</param>
         private static void CreateNoteTable(SQLiteConnection conn)
         {
             string sql = @"
