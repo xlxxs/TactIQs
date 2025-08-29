@@ -133,6 +133,20 @@
                                     <DataGridTextColumn Header="Ergebnis" Binding="{Binding Result}" Width="*" />
                                     <DataGridTextColumn Header="Wettkampf" Binding="{Binding Competition}" Width="*" />
                                     <DataGridTextColumn Header="Bemerkungen" Binding="{Binding Notes}" Width="*" />
+
+                                    <DataGridTemplateColumn Header="Aktion" Width="Auto">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Content="🗑️" 
+                                                        Background="Transparent" 
+                                                        BorderThickness="0"
+                                                        Foreground="Black"
+                                                        ToolTip="Match löschen"
+                                                        Command="{Binding DataContext.DeleteMatchCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>                                    
                                 </DataGrid.Columns>
                             </DataGrid>
 
@@ -179,6 +193,20 @@
                                     <DataGridTextColumn Header="Notiz" Binding="{Binding Content}" Width="2*" />
                                     <DataGridTextColumn Header="Typ" Binding="{Binding Type}" Width="*" />
                                     <DataGridTextColumn Header="Kategorie" Binding="{Binding Category}" Width="*" />
+                                    
+                                    <DataGridTemplateColumn Header="Aktion" Width="Auto">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Content="🗑️" 
+                                                        Background="Transparent" 
+                                                        BorderThickness="0"
+                                                        Foreground="Black"
+                                                        ToolTip="Notiz löschen"
+                                                        Command="{Binding DataContext.DeleteNoteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
 

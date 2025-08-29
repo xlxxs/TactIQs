@@ -58,7 +58,9 @@ namespace TactIQ.ViewModels
 
         // Befehle für das Laden von Matches und Notizen sowie das Speichern des Profils
         public ICommand LoadMatchesCommand { get; }
+        public ICommand DeleteMatchCommand { get; }
         public ICommand LoadNotesCommand { get; }
+        public ICommand DeleteNoteCommand { get; }
         public ICommand SaveCommand { get; }
 
         // Listen für Matches und Notizen
@@ -92,6 +94,9 @@ namespace TactIQ.ViewModels
             _club = opponent.Club;
 
             // Befehle initialisieren
+            DeleteMatchCommand = new RelayCommand(m => DeleteMatch(m as Match));
+            DeleteNoteCommand = new RelayCommand(n => DeleteNote(n as Note));
+
             LoadMatchesCommand = new RelayCommand(_ => LoadMatches());
             LoadNotesCommand = new RelayCommand(_ => LoadNotes());
             SaveCommand = new RelayCommand(_ => Save());
@@ -171,6 +176,32 @@ namespace TactIQ.ViewModels
             RecentMisc.Clear();
             foreach (var n in misc) 
                 RecentMisc.Add(n);
+        }
+
+        /// <summary>
+        /// Löscht das ausgewählte Match.
+        /// </summary>
+        /// <param name="match">zu löschendes Match</param>
+        private void DeleteMatch(Match? match)
+        {
+            if (match != null)
+            {
+                _matchRepo.Delete(match.Id);
+                LoadMatches();
+            }
+        }
+
+        /// <summary>
+        /// Löscht die ausgewählte Notiz.
+        /// </summary>
+        /// <param name="note">zu löschende Notiz</param>
+        private void DeleteNote(Note? note)
+        {
+            if (note != null)
+            {
+                _notesRepo.Delete(note.Id);
+                LoadNotes();
+            }
         }
 
         /// <summary>
