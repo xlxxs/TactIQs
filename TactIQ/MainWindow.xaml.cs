@@ -66,7 +66,7 @@ namespace TactIQ
             nav = new NavigationService(vm => _mainVM.CurrentViewModel = vm);
 
             // Startseite: Gegnerliste
-            _mainVM.CurrentViewModel = new OpponentProfilesViewModel(nav, _opponentRepo);
+            _mainVM.CurrentViewModel = new OpponentProfilesViewModel(nav, _opponentRepo, _matchRepo, _noteRepo);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -88,7 +88,7 @@ namespace TactIQ
             {
                 case "Gegner":
                     this.Title = "Gegnerprofile";
-                    var opponentVM = new OpponentProfilesViewModel(nav, _opponentRepo);
+                    var opponentVM = new OpponentProfilesViewModel(nav, _opponentRepo, _matchRepo, _noteRepo);
                     _mainVM.CurrentViewModel = opponentVM;
                     break;
                 case "Analyse":

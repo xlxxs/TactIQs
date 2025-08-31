@@ -77,15 +77,15 @@ namespace TactIQ.ViewModels
         /// <param name="nav"></param>
         /// <param name="repo"></param>
         /// <param name="opponent"></param>
-        public ProfileEditViewModel(INavigationService nav,IOpponentRepository repo, Opponent opponent)
+        public ProfileEditViewModel(INavigationService nav,IOpponentRepository repo, Opponent opponent, IMatchRepository matchRepository, INoteRepository noteRepository)
         {
             // Initialisierung der Repositories und NavigationService
             _opponentsRepo = repo;
             _nav = nav;
 
             // Initialisierung der Repositories für Matches und Notizen
-            _matchRepo = new SqliteMatchRepository();
-            _notesRepo = new SqliteNotesRepository();
+            _matchRepo = matchRepository;
+            _notesRepo = noteRepository;
 
             // Setzen der Eigenschaften des Gegners
             Id = opponent.Id;
@@ -219,7 +219,7 @@ namespace TactIQ.ViewModels
                 _opponentsRepo.Update(new Opponent { Id = Id, Club = Club, Marked = Marked, Name = Name});
             }
 
-            _nav.NavigateTo(new OpponentProfilesViewModel(_nav, _opponentsRepo));
+            _nav.NavigateTo(new OpponentProfilesViewModel(_nav, _opponentsRepo, _matchRepo, _notesRepo));
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
