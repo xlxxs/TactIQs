@@ -23,7 +23,7 @@ namespace TactIQ.Tests
         }
 
         [Fact]
-        public void Ctor_LädtAlleMatchesUndOpponent()
+        public void LoadAllMatchesAndOpponents()
         {
             // Arrange
             var matches = new List<Match>
@@ -47,7 +47,7 @@ namespace TactIQ.Tests
         }
 
         [Fact]
-        public void ApplyFilter_FiltertNachOpponent()
+        public void ApplyFilterOpponent()
         {
             // Arrange
             var matches = new List<Match>
@@ -74,7 +74,7 @@ namespace TactIQ.Tests
         }
 
         [Fact]
-        public void ApplyFilter_FiltertNachDatum()
+        public void ApplyFilterDate()
         {
             // Arrange
             var matches = new List<Match>
@@ -96,7 +96,7 @@ namespace TactIQ.Tests
         }
 
         [Fact]
-        public void UpdateCharts_SetztPieUndLineChartModel()
+        public void UpdateCharts()
         {
             // Arrange
             var matches = new List<Match>

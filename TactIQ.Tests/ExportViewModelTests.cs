@@ -24,7 +24,7 @@ namespace TactIQ.Tests
         }
 
         [Fact]
-        public void Ctor_LädtAlleDaten()
+        public void LoadAllData()
         {
             // Arrange
             _oppRepoMock.Setup(r => r.GetAll()).Returns(new List<Opponent> { new Opponent { Id = 1, Name = "A", Club = "ClubA" } });
@@ -41,7 +41,7 @@ namespace TactIQ.Tests
         }
 
         [Fact]
-        public void ExportMatches_FiltertNachOpponentUndDatum()
+        public void ExportMatchesWithDateFilter()
         {
             // Arrange
             var opp = new Opponent { Id = 1, Name = "A", Club = "ClubA" };
@@ -70,7 +70,7 @@ namespace TactIQ.Tests
         }
 
         [Fact]
-        public void ExportNotes_FiltertNachOpponentUndMarked()
+        public void ExportNotesWithMarkedFilter()
         {
             // Arrange
             var opp = new Opponent { Id = 1, Name = "A", Club = "ClubA" };
