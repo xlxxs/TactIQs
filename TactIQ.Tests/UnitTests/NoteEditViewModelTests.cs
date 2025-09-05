@@ -4,7 +4,7 @@ using TactIQ.ViewModels;
 using Xunit;
 using static TactIQ.Miscellaneous.Interfaces;
 
-namespace TactIQ.Tests
+namespace TactIQ.Tests.UnitTests
 {
     public class NoteEditViewModelTests
     {
@@ -16,26 +16,31 @@ namespace TactIQ.Tests
         }
 
         [Fact]
-        public void SaveCommand_AddsNote()
+        public void SaveCommand_AddsNote_K12()
         {
+            //Arrange
             var newNote = new Note { Id = 42, OpponentId = 1, Content = "Neue Notiz" };
             var vm = new NoteEditViewModel(_noteRepoMock.Object, newNote);
 
+            //Act
             vm.SaveCommand.Execute(null);
 
+            //Assert
             _noteRepoMock.Verify(r => r.Add(It.Is<Note>(n => n.Content == "Neue Notiz")), Times.Once);
         }
 
         [Fact]
-        public void SaveCommand_UpdatedNote()
+        public void SaveCommand_UpdatedNote_K13()
         {
+            // Arrange
             var existingNote = new Note { Id = 42, OpponentId = 1, Content = "Update Notiz" };
             _noteRepoMock.Setup(r => r.GetById(42)).Returns(existingNote);
 
+            // Act
             var vm = new NoteEditViewModel(_noteRepoMock.Object, existingNote);
-
             vm.SaveCommand.Execute(null);
 
+            // Assert
             _noteRepoMock.Verify(r => r.Update(It.Is<Note>(n => n.Id == 42 && n.Content == "Update Notiz")), Times.Once);
         }
     }

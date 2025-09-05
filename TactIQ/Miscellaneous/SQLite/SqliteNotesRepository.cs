@@ -24,7 +24,7 @@ namespace TactIQ.Miscellaneous.SQLite
             var list = new List<Note>();
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
             conn.Open();
-            using var cmd = new SQLiteCommand("SELECT Id, OpponentId, Content, Type, Marked FROM Note WHERE OpponentId = @id", conn);
+            using var cmd = new SQLiteCommand("SELECT Id, OpponentId, Content, Type, Marked, Category FROM Note WHERE OpponentId = @id", conn);
             cmd.Parameters.AddWithValue("@id", opponentId);
 
             using var r = cmd.ExecuteReader();
@@ -36,7 +36,8 @@ namespace TactIQ.Miscellaneous.SQLite
                     OpponentId = r.GetInt32(1),
                     Content = r.IsDBNull(2) ? "" : r.GetString(2),
                     Type = r.IsDBNull(3) ? "" : r.GetString(3),
-                    Marked = r.HasRows && r.GetBoolean(4)
+                    Marked = r.HasRows && r.GetBoolean(4),
+                    Category = r.IsDBNull(5) ? "" : r.GetString(5)
                 });           
             }
 

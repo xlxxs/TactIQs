@@ -9,7 +9,7 @@ using Xunit;
 using static TactIQ.Miscellaneous.Interfaces;
 using Match = TactIQ.Model.Match;
 
-namespace TactIQ.Tests
+namespace TactIQ.Tests.UnitTests
 {
     public class AnalysisViewModelTests
     {
@@ -23,7 +23,7 @@ namespace TactIQ.Tests
         }
 
         [Fact]
-        public void LoadAllMatchesAndOpponents()
+        public void LoadAllMatchesAndOpponents_DataLoaded_K14()
         {
             // Arrange
             var matches = new List<Match>
@@ -47,7 +47,7 @@ namespace TactIQ.Tests
         }
 
         [Fact]
-        public void ApplyFilterOpponent()
+        public void ApplyFilterOpponent_ListsFiltered_K15()
         {
             // Arrange
             var matches = new List<Match>
@@ -74,7 +74,7 @@ namespace TactIQ.Tests
         }
 
         [Fact]
-        public void ApplyFilterDate()
+        public void ApplyFilterDate_ListsFiltered_K16()
         {
             // Arrange
             var matches = new List<Match>
@@ -96,7 +96,7 @@ namespace TactIQ.Tests
         }
 
         [Fact]
-        public void UpdateCharts()
+        public void UpdateCharts_ChartModelUpdated_K17()
         {
             // Arrange
             var matches = new List<Match>

@@ -84,7 +84,7 @@ namespace TactIQ.Miscellaneous.SQLite
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
             conn.Open();
-            using var cmd = new SQLiteCommand("SELECT Id, OpponentId, MatchDate, Result, Competition, IsWin, Notes FROM Match WHERE Id = @id", conn);
+            using var cmd = new SQLiteCommand("SELECT Id, OpponentId, MatchDate, Result, Competition, IsWin, Notes, Marked FROM Match WHERE Id = @id", conn);
             cmd.Parameters.AddWithValue("@id", id);
             using var r = cmd.ExecuteReader();
             if (r.Read())
@@ -134,7 +134,7 @@ namespace TactIQ.Miscellaneous.SQLite
         {
             using var conn = new SQLiteConnection($"Data Source={DatabaseBuilder.GetDatabasePath()};Version=3;");
             conn.Open();
-            using var cmd = new SQLiteCommand("UPDATE Match SET OpponnentId=@opponentId, MatchDate=@date, Result=@result, Competition=@competition, IsWin = @iswin, Notes = @notes, Marked = @marked WHERE Id=@id", conn);
+            using var cmd = new SQLiteCommand("UPDATE Match SET OpponentId=@opponentId, MatchDate=@date, Result=@result, Competition=@competition, IsWin = @iswin, Notes = @notes, Marked = @marked WHERE Id=@id", conn);
     
             cmd.Parameters.AddWithValue("@id", match.Id);
             cmd.Parameters.AddWithValue("@opponentId", match.OpponentId);

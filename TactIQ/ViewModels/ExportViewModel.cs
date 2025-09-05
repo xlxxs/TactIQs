@@ -69,8 +69,21 @@ namespace TactIQ.ViewModels
         /// <summary>
         /// Methode zum Exportieren der Notizen und Matches in eine Excel-Datei.
         /// </summary>
-        private void ExportToExcel()
+        public void ExportToExcel(string customPath = null)
         {
+            using var workbook = new XLWorkbook();
+
+            if (customPath != null)
+            {
+                if (ExportMatches)
+                    ExportMatchesToSheet(workbook);
+                if (ExportNotes)
+                    ExportNotesToSheet(workbook);
+
+                workbook.SaveAs(customPath);
+                return;
+            }
+
             // Überprüfen, ob mindestens eine Exportoption ausgewählt ist
             SaveFileDialog saveDialog = new SaveFileDialog
             {
@@ -82,7 +95,6 @@ namespace TactIQ.ViewModels
             if (saveDialog.ShowDialog() != true)
                 return;
 
-            using var workbook = new XLWorkbook();
 
             // Überprüfen, ob mindestens eine Exportoption ausgewählt ist
             // Wenn mindestens eine Option ausgewählt ist, die entsprechenden Daten exportieren
@@ -92,9 +104,12 @@ namespace TactIQ.ViewModels
             if (ExportNotes)
                 ExportNotesToSheet(workbook);
 
-            // Speichern der Excel-Datei
+
+            // Speichern der Excel-Datei in ausgewähltem Pfad
             workbook.SaveAs(saveDialog.FileName);
-            MessageBox.Show("Export erfolgreich!", "Export", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            if (customPath == null)
+                MessageBox.Show("Export erfolgreich!", "Export", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         /// <summary>

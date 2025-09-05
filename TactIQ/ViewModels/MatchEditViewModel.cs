@@ -58,16 +58,16 @@ namespace TactIQ.ViewModels
             _matchRepo = repo;
 
             // Setze die Standardwerte für die Eigenschaften
-            _date = match.Date.HasValue ? match.Date.Value : DateTime.Now;
+            _date = match.Date == default ? DateTime.Now : match.Date.Value;
             _opponentId = match.OpponentId;
 
             // Setze die Eigenschaften basierend auf dem übergebenen Match
-            if (match.Id != 0)
+            if (true)
             {
                 _id = match.Id;
                 _competition = match.Competition;
-                _isWin = match.IsWin;
                 _result = match.Result;
+                _isWin = ParseResultToIsWin(_result);
                 _notes = match.Notes;
                 _isMarked = match.Marked;
             }

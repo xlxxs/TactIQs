@@ -8,7 +8,7 @@ using Xunit;
 using static TactIQ.Miscellaneous.Interfaces;
 using Match = TactIQ.Model.Match;
 
-namespace TactIQ.Tests
+namespace TactIQ.Tests.UnitTests
 {
     public class ExportViewModelTests
     {
@@ -24,7 +24,7 @@ namespace TactIQ.Tests
         }
 
         [Fact]
-        public void LoadAllData()
+        public void LoadAllData_ExportDataLoaded_K18()
         {
             // Arrange
             _oppRepoMock.Setup(r => r.GetAll()).Returns(new List<Opponent> { new Opponent { Id = 1, Name = "A", Club = "ClubA" } });
@@ -41,7 +41,7 @@ namespace TactIQ.Tests
         }
 
         [Fact]
-        public void ExportMatchesWithDateFilter()
+        public void ExportMatchesWithDateFilter_ExportMatchesFiltered_K19()
         {
             // Arrange
             var opp = new Opponent { Id = 1, Name = "A", Club = "ClubA" };
@@ -70,7 +70,7 @@ namespace TactIQ.Tests
         }
 
         [Fact]
-        public void ExportNotesWithMarkedFilter()
+        public void ExportNotesWithMarkedFilter_ExportNotesFiltered_K20()
         {
             // Arrange
             var opp = new Opponent { Id = 1, Name = "A", Club = "ClubA" };

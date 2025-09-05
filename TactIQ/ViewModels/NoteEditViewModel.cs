@@ -50,12 +50,13 @@ namespace TactIQ.ViewModels
             // Setze die übergebenen Werte für die Eigenschaften
             _opponentId = note.OpponentId;
 
-            if (note.Id != 0)
+            if (true)
             {
                 _id = note.Id;
                 _content = note.Content ?? String.Empty;
                 _category = note.Category ?? String.Empty;
                 _type = note.Type ?? String.Empty;
+                _isMarked = note.Marked;
             }
 
             // SaveCommand initialisieren

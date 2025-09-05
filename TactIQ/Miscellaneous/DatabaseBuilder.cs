@@ -19,10 +19,17 @@ namespace TactIQ.Miscellaneous
         /// <summary>
         /// Metthode zum Initialisieren der Datenbank.
         /// </summary>
-        public static void Initialize()
+        public static void Initialize(string? customPath = null)
         {
-            string? assemblyDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            _databasePath = Path.Combine(assemblyDir, "AppData.sqlite");
+            if (customPath != null)
+            {
+                _databasePath = customPath;
+            }
+            else
+            {
+                string? assemblyDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                _databasePath = Path.Combine(assemblyDir, "AppData.sqlite");
+            }
 
             if (!File.Exists(_databasePath))
             {
