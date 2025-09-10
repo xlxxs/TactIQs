@@ -1,10 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using TactIQ.Miscellaneous;
 using TactIQ.Miscellaneous.SQLite;
 using TactIQ.Model;
+using TactIQ.Views;
 using static TactIQ.Miscellaneous.Interfaces;
 
 namespace TactIQ.ViewModels
@@ -19,8 +21,11 @@ namespace TactIQ.ViewModels
         // NavigationService für die Navigation zwischen Views
         public readonly INavigationService _nav;
 
+        private readonly IMatchEditViewModelFactory _matchEditVmFactory;
+        private readonly INoteEditViewModelFactory _noteEditVmFactory;
+
         // Eigenschaften für das Gegnerprofil
-        public int Id { get; }
+        public int Id { get; set; }
         private string _name;
         public string Name { get => _name; set { _name = value; OnPropertyChanged(); } }
         private bool _marked;
@@ -56,6 +61,12 @@ namespace TactIQ.ViewModels
             }
         }
 
+        private bool _navigateAfterSave = true;
+        public bool NavigateAfterSave
+        {
+            get => _navigateAfterSave;
+            set => _navigateAfterSave = value;
+        }
         // Befehle für das Laden von Matches und Notizen sowie das Speichern des Profils
         public ICommand LoadMatchesCommand { get; }
         public ICommand DeleteMatchCommand { get; }
@@ -77,7 +88,7 @@ namespace TactIQ.ViewModels
         /// <param name="nav"></param>
         /// <param name="repo"></param>
         /// <param name="opponent"></param>
-        public ProfileEditViewModel(INavigationService nav,IOpponentRepository repo, Opponent opponent, IMatchRepository matchRepository, INoteRepository noteRepository)
+        public ProfileEditViewModel(INavigationService nav, IMatchEditViewModelFactory matchEditVmFactory, INoteEditViewModelFactory noteEditVmFactory, IOpponentRepository repo, Opponent opponent, IMatchRepository matchRepository, INoteRepository noteRepository)
         {
             // Initialisierung der Repositories und NavigationService
             _opponentsRepo = repo;
@@ -86,6 +97,9 @@ namespace TactIQ.ViewModels
             // Initialisierung der Repositories für Matches und Notizen
             _matchRepo = matchRepository;
             _notesRepo = noteRepository;
+
+            _matchEditVmFactory = matchEditVmFactory;
+            _noteEditVmFactory = noteEditVmFactory;
 
             // Setzen der Eigenschaften des Gegners
             Id = opponent.Id;
@@ -204,6 +218,48 @@ namespace TactIQ.ViewModels
             }
         }
 
+        public void OpenMatchEdit(DependencyObject sender, bool isEdit = true)
+        {
+            if (!isEdit)
+            {
+                if (Id == 0)
+                {
+                    NavigateAfterSave = false;
+                    SaveCommand.Execute(null);
+                    NavigateAfterSave = true;
+                }
+            }
+
+            var matchVm = _matchEditVmFactory.Create(SelectedMatch ?? new Match { OpponentId = Id});
+            var popup = new NewMatchWindow(matchVm);
+            popup.Owner = Window.GetWindow(sender);
+
+            if (popup.ShowDialog() == true)
+            {
+                LoadMatchesCommand.Execute(null);
+            }
+        }
+        public void OpenNoteEdit(DependencyObject sender, bool isEdit = true)
+        {
+            if (!isEdit)
+            {
+                if (Id == 0)
+                {
+                    NavigateAfterSave = false;
+                    SaveCommand.Execute(null);
+                    NavigateAfterSave = true;
+                }
+            }
+
+            var noteVm = _noteEditVmFactory.Create(SelectedNote ?? new Note { OpponentId = Id});
+            var popup = new NewNoteWindow(noteVm);
+            popup.Owner = Window.GetWindow(sender);
+            if (popup.ShowDialog() == true)
+            {
+                LoadNotesCommand.Execute(null);
+            }
+        }
+
         /// <summary>
         /// Methode zum Speichern der Änderungen am Gegnerprofil.
         /// </summary>
@@ -212,14 +268,15 @@ namespace TactIQ.ViewModels
             // Unterscheidung zwischen Hinzufügen und Aktualisieren eines Gegners
             if (Id == 0 || _opponentsRepo.GetById(Id) == null)
             {
-                _opponentsRepo.Add(Name, Club);
+                Id = _opponentsRepo.Add(Name, Club); 
             }
             else
             {
                 _opponentsRepo.Update(new Opponent { Id = Id, Club = Club, Marked = Marked, Name = Name});
             }
 
-            _nav.NavigateTo(new OpponentProfilesViewModel(_nav, _opponentsRepo, _matchRepo, _notesRepo));
+            if(NavigateAfterSave)
+                _nav.NavigateTo(new OpponentProfilesViewModel(_nav, _matchEditVmFactory, _noteEditVmFactory, _opponentsRepo, _matchRepo, _notesRepo));
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

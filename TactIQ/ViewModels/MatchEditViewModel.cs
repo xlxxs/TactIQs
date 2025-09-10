@@ -47,6 +47,8 @@ namespace TactIQ.ViewModels
         // Aktion, die aufgerufen wird, wenn das Match erfolgreich gespeichert wurde
         public Action? OnSaved { get; set; }
 
+        public event EventHandler? SavingRequested;
+
         /// <summary>
         /// Konstruktor für das MatchEditViewModel, der die Repositories initialisiert und die Daten eines Matches lädt.
         /// </summary>
@@ -136,7 +138,11 @@ namespace TactIQ.ViewModels
                 return;
             }
 
-            //Unterscheidung, ob es sich um ein neues Match oder ein Update handelt
+            if (OpponentId == 0)
+            {
+                SavingRequested?.Invoke(this, EventArgs.Empty);
+            }
+
             if (_id == 0 || _matchRepo.GetById(_id) == null)
             {
                 _matchRepo.Add(new Match { Competition = _competition, Date = _date, IsWin = _isWin, Notes = _notes, OpponentId = _opponentId, Result = _result, Marked = _isMarked });
@@ -146,8 +152,10 @@ namespace TactIQ.ViewModels
                 _matchRepo.Update(new Match { Id = _id, Competition = _competition, Date = _date, IsWin = _isWin, Notes = _notes, OpponentId = _opponentId, Result = _result });
             }
 
-            // Rufe die OnSaved-Aktion auf, dafür dass das Match erfolgreich gespeichert wurde
-            OnSaved?.Invoke();
+            if (DialogCloser is Window window)
+            {
+                window.DialogResult = true; 
+            }
 
             // Schließe den Dialog
             DialogCloser?.Close(null);

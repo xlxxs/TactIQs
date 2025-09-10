@@ -14,6 +14,7 @@ using TactIQ.Miscellaneous.SQLite;
 using TactIQ.Services;
 using TactIQ.ViewModels;
 using TactIQ.Views;
+using static TactIQ.Miscellaneous.Interfaces;
 using NavigationService = TactIQ.Services.NavigationService;
 
 namespace TactIQ
@@ -44,6 +45,8 @@ namespace TactIQ
         private SqliteOpponentRepository _opponentRepo;
         private SqliteMatchRepository _matchRepo;
         private SqliteNotesRepository _noteRepo;
+        private readonly IMatchEditViewModelFactory _matchEditVmFactory;
+        private readonly INoteEditViewModelFactory _noteEditVmFactory;
 
 
         private NavigationService nav;
@@ -60,13 +63,17 @@ namespace TactIQ
             DataContext = _mainVM;
 
             _opponentRepo = new SqliteOpponentRepository();
+
             _matchRepo = new SqliteMatchRepository();
+            _matchEditVmFactory = new MatchEditViewModelFactory(_matchRepo);
+            
             _noteRepo = new SqliteNotesRepository();
+            _noteEditVmFactory = new NoteEditViewModelFactory(_noteRepo);
 
             nav = new NavigationService(vm => _mainVM.CurrentViewModel = vm);
 
             // Startseite: Gegnerliste
-            _mainVM.CurrentViewModel = new OpponentProfilesViewModel(nav, _opponentRepo, _matchRepo, _noteRepo);
+            _mainVM.CurrentViewModel = new OpponentProfilesViewModel(nav,_matchEditVmFactory, _noteEditVmFactory, _opponentRepo, _matchRepo, _noteRepo);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -88,7 +95,7 @@ namespace TactIQ
             {
                 case "Gegner":
                     this.Title = "Gegnerprofile";
-                    var opponentVM = new OpponentProfilesViewModel(nav, _opponentRepo, _matchRepo, _noteRepo);
+                    var opponentVM = new OpponentProfilesViewModel(nav, _matchEditVmFactory, _noteEditVmFactory, _opponentRepo, _matchRepo, _noteRepo);
                     _mainVM.CurrentViewModel = opponentVM;
                     break;
                 case "Analyse":

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TactIQ.ViewModels;
 
 namespace TactIQ.Miscellaneous
 {
@@ -60,6 +61,15 @@ namespace TactIQ.Miscellaneous
             int Add(Model.Match match);
             void Update(Model.Match match);
             void Delete(int id);
+        }
+
+        public interface IMatchEditViewModelFactory
+        {
+            MatchEditViewModel Create(Model.Match match);
+        }
+        public interface INoteEditViewModelFactory
+        {
+            NoteEditViewModel Create(Model.Note note);
         }
     }
 }

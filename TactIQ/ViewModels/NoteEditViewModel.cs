@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using TactIQ.Miscellaneous;
 using TactIQ.Model;
@@ -80,6 +81,11 @@ namespace TactIQ.ViewModels
             }
 
             OnSaved?.Invoke();
+
+            if (DialogCloser is Window window)
+            {
+                window.DialogResult = true;
+            }
 
             DialogCloser?.Close(null);
         }

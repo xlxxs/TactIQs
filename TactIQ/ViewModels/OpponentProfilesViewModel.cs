@@ -20,6 +20,8 @@ namespace TactIQ.ViewModels
         private readonly IOpponentRepository _opponentRepo;
         private readonly IMatchRepository _matchRepo;
         private readonly INoteRepository _noteRepo;
+        private readonly IMatchEditViewModelFactory _matchEditVmFactory;
+        private readonly INoteEditViewModelFactory _noteEditVmFactory;
 
         // Listen für alle Gegner und gefilterte Gegner
         public ObservableCollection<Opponent> AllOpponents { get; } = new();
@@ -82,13 +84,17 @@ namespace TactIQ.ViewModels
         /// </summary>
         /// <param name="nav"></param>
         /// <param name="opponentRepo"></param>
-        public OpponentProfilesViewModel(INavigationService nav, IOpponentRepository opponentRepo, IMatchRepository matchRepository, INoteRepository noteRepository)
+        public OpponentProfilesViewModel(INavigationService nav, IMatchEditViewModelFactory matchEditViewModelFactory, INoteEditViewModelFactory noteEditViewModelFactory, IOpponentRepository opponentRepo, IMatchRepository matchRepository, INoteRepository noteRepository)
         {
             // Initialisierung der Navigation und des Repositories
             _nav = nav;
             _opponentRepo = opponentRepo;
             _matchRepo = matchRepository;
             _noteRepo = noteRepository;
+
+            _matchEditVmFactory = matchEditViewModelFactory;
+            _noteEditVmFactory = noteEditViewModelFactory;
+
             // Befehle initialisieren
             LoadOpponentsCommand = new RelayCommand(_ => LoadOpponents());
             AddOpponentCommand = new RelayCommand(name => AddOpponent(name as string));
@@ -143,7 +149,7 @@ namespace TactIQ.ViewModels
                 return;
 
             // Neuen Gegner erstellen und zur Profilbearbeitung navigieren
-            var vm = new ProfileEditViewModel(_nav, _opponentRepo, new Opponent { Name = name }, _matchRepo, _noteRepo);
+            var vm = new ProfileEditViewModel(_nav, _matchEditVmFactory, _noteEditVmFactory, _opponentRepo, new Opponent { Name = name, Club = "" }, _matchRepo, _noteRepo);
             _nav.NavigateTo(vm);
 
             // Nach dem Hinzufügen den Suchbegriff zurücksetzen und die Gegner neu laden
@@ -175,7 +181,7 @@ namespace TactIQ.ViewModels
                 return;
 
             // Navigiere zur Profilbearbeitung des ausgewählten Gegners
-            var vm = new ProfileEditViewModel(_nav, _opponentRepo, SelectedOpponent, _matchRepo, _noteRepo);
+            var vm = new ProfileEditViewModel(_nav, _matchEditVmFactory, _noteEditVmFactory, _opponentRepo, SelectedOpponent, _matchRepo, _noteRepo);
             _nav.NavigateTo(vm);
 
             SelectedOpponent = null;

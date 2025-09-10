@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TactIQ.ViewModels;
+using static TactIQ.Miscellaneous.Interfaces;
 
 namespace TactIQ.Views
 {
@@ -21,6 +22,8 @@ namespace TactIQ.Views
     /// </summary>
     public partial class ProfileEditUC : UserControl
     {
+        private readonly IMatchEditViewModelFactory _matchEditVmFactory;
+
         public ProfileEditUC()
         {
             InitializeComponent();
@@ -35,13 +38,7 @@ namespace TactIQ.Views
         {
             if (DataContext is ProfileEditViewModel parentVm)
             {
-                var vm = new MatchEditViewModel(parentVm._matchRepo, new Model.Match { Date=DateTime.Now, OpponentId = parentVm.Id});
-                vm.OnSaved = () => parentVm.LoadMatchesCommand.Execute(null);
-
-                var popup = new NewMatchWindow(vm); 
-                popup.Owner = Window.GetWindow(this);
-
-                popup.ShowDialog();
+                parentVm.OpenMatchEdit(this, false);
             }
         }
 
@@ -54,13 +51,7 @@ namespace TactIQ.Views
         {
             if (DataContext is ProfileEditViewModel parentVm)
             {
-                var vm = new NoteEditViewModel(parentVm._notesRepo, new Model.Note { OpponentId = parentVm.Id });
-
-                vm.OnSaved = () => parentVm.LoadNotesCommand.Execute(null);
-
-                var popup = new NewNoteWindow(vm);
-                popup.Owner = Window.GetWindow(this);
-                popup.ShowDialog();
+                parentVm.OpenNoteEdit(this, false);
             }
         }
 
@@ -73,15 +64,7 @@ namespace TactIQ.Views
         {
             if (DataContext is ProfileEditViewModel parentVm && parentVm.SelectedNote != null)
             {
-                var vm = new NoteEditViewModel(parentVm._notesRepo, parentVm.SelectedNote);
-
-                var popup = new NewNoteWindow(vm);
-                popup.Owner = Window.GetWindow(this);
-
-                if (popup.ShowDialog() == true)
-                {
-                    parentVm.LoadNotesCommand.Execute(null);
-                }
+                parentVm.OpenNoteEdit(this);
             }
         }
 
@@ -94,15 +77,7 @@ namespace TactIQ.Views
         {
             if (DataContext is ProfileEditViewModel parentVm && parentVm.SelectedMatch != null)
             {
-                var vm = new MatchEditViewModel(parentVm._matchRepo, parentVm.SelectedMatch);
-
-                var popup = new NewMatchWindow(vm);
-                popup.Owner = Window.GetWindow(this);
-
-                if (popup.ShowDialog() == true)
-                {
-                    parentVm.LoadMatchesCommand.Execute(null);
-                }
+                parentVm.OpenMatchEdit(this);
             }
         }
     }
