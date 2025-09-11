@@ -63,26 +63,44 @@ namespace TactIQ.Miscellaneous
             void Delete(int id);
         }
 
+        /// <summary>
+        /// Schnittstelle für die Factory zur Erstellung von MatchEditViewModels.
+        /// </summary>
         public interface IMatchEditViewModelFactory
         {
             MatchEditViewModel Create(Model.Match match);
         }
+        /// <summary>
+        /// Schnittstelle für die Factory zur Erstellung von NoteEditViewModels.
+        /// </summary>
         public interface INoteEditViewModelFactory
         {
             NoteEditViewModel Create(Model.Note note);
         }
+        /// <summary>
+        /// Schnittstelle für die Factory zur Erstellung von ProfileEditViewModels.
+        /// </summary>
         public interface IProfileEditViewModelFactory
         {
             ProfileEditViewModel Create(Model.Opponent opponent);
         }
+        /// <summary>
+        /// Schnittstelle für die Factory zur Erstellung von AnalysisViewModels.
+        /// </summary>
         public interface IAnalysisViewModelFactory
         {
             AnalysisViewModel Create();
         }
+        /// <summary>
+        /// Schnittstelle für die Factory zur Erstellung von ExportViewModels.
+        /// </summary>
         public interface IExportViewModelFactory
         {
             ExportViewModel Create();
         }
+        /// <summary>
+        /// Schnittstelle für die Factory zur Erstellung von OpponentProfilesViewModels.
+        /// </summary>
         public interface IOpponentProfilesViewModelFactory
         {
             OpponentProfilesViewModel Create();

@@ -10,6 +10,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TactIQ.Miscellaneous;
+using TactIQ.Miscellaneous.Factories;
 using TactIQ.Miscellaneous.SQLite;
 using TactIQ.Services;
 using TactIQ.ViewModels;
