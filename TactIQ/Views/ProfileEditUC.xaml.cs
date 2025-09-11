@@ -22,8 +22,6 @@ namespace TactIQ.Views
     /// </summary>
     public partial class ProfileEditUC : UserControl
     {
-        private readonly IMatchEditViewModelFactory _matchEditVmFactory;
-
         public ProfileEditUC()
         {
             InitializeComponent();

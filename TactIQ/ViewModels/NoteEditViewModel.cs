@@ -69,7 +69,6 @@ namespace TactIQ.ViewModels
         /// </summary>
         private void Save()
         {
-
             // Unterscheidung, ob es sich um eine neue Notiz oder ein Update handelt
             if (_id == 0 || _noteRepo.GetById(_id) == null)
             {

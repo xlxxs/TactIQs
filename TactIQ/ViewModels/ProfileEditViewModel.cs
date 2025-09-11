@@ -23,6 +23,7 @@ namespace TactIQ.ViewModels
 
         private readonly IMatchEditViewModelFactory _matchEditVmFactory;
         private readonly INoteEditViewModelFactory _noteEditVmFactory;
+        private readonly IOpponentProfilesViewModelFactory _opponentProfilesViewModelFactory;
 
         // Eigenschaften für das Gegnerprofil
         public int Id { get; set; }
@@ -88,7 +89,15 @@ namespace TactIQ.ViewModels
         /// <param name="nav"></param>
         /// <param name="repo"></param>
         /// <param name="opponent"></param>
-        public ProfileEditViewModel(INavigationService nav, IMatchEditViewModelFactory matchEditVmFactory, INoteEditViewModelFactory noteEditVmFactory, IOpponentRepository repo, Opponent opponent, IMatchRepository matchRepository, INoteRepository noteRepository)
+        public ProfileEditViewModel(
+            INavigationService nav,
+            IMatchEditViewModelFactory matchEditVmFactory,
+            INoteEditViewModelFactory noteEditVmFactory,
+            IOpponentRepository repo,
+            Opponent opponent,
+            IMatchRepository matchRepository,
+            INoteRepository noteRepository,
+            IOpponentProfilesViewModelFactory opponentProfilesViewModelFactory)
         {
             // Initialisierung der Repositories und NavigationService
             _opponentsRepo = repo;
@@ -100,6 +109,7 @@ namespace TactIQ.ViewModels
 
             _matchEditVmFactory = matchEditVmFactory;
             _noteEditVmFactory = noteEditVmFactory;
+            _opponentProfilesViewModelFactory = opponentProfilesViewModelFactory;
 
             // Setzen der Eigenschaften des Gegners
             Id = opponent.Id;
@@ -275,8 +285,11 @@ namespace TactIQ.ViewModels
                 _opponentsRepo.Update(new Opponent { Id = Id, Club = Club, Marked = Marked, Name = Name});
             }
 
-            if(NavigateAfterSave)
-                _nav.NavigateTo(new OpponentProfilesViewModel(_nav, _matchEditVmFactory, _noteEditVmFactory, _opponentsRepo, _matchRepo, _notesRepo));
+            if (NavigateAfterSave)
+            {
+                var opponentProfilesVm = _opponentProfilesViewModelFactory.Create();
+                _nav.NavigateTo(opponentProfilesVm);
+            }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

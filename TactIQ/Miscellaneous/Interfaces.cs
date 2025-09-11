@@ -71,5 +71,22 @@ namespace TactIQ.Miscellaneous
         {
             NoteEditViewModel Create(Model.Note note);
         }
+        public interface IProfileEditViewModelFactory
+        {
+            ProfileEditViewModel Create(Model.Opponent opponent);
+        }
+        public interface IAnalysisViewModelFactory
+        {
+            AnalysisViewModel Create();
+        }
+        public interface IExportViewModelFactory
+        {
+            ExportViewModel Create();
+        }
+        public interface IOpponentProfilesViewModelFactory
+        {
+            OpponentProfilesViewModel Create();
+        }
+
     }
 }

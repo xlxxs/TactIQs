@@ -69,7 +69,7 @@ namespace TactIQ.ViewModels
         /// <summary>
         /// Methode zum Exportieren der Notizen und Matches in eine Excel-Datei.
         /// </summary>
-        public void ExportToExcel(string customPath = null)
+        public void ExportToExcel(string? customPath = null)
         {
             using var workbook = new XLWorkbook();
 

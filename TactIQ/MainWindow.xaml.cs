@@ -45,9 +45,13 @@ namespace TactIQ
         private SqliteOpponentRepository _opponentRepo;
         private SqliteMatchRepository _matchRepo;
         private SqliteNotesRepository _noteRepo;
+
         private readonly IMatchEditViewModelFactory _matchEditVmFactory;
         private readonly INoteEditViewModelFactory _noteEditVmFactory;
-
+        private readonly IProfileEditViewModelFactory _profileEditVmFactory;
+        private readonly IAnalysisViewModelFactory _analysisViewModelFactory;
+        private readonly IExportViewModelFactory _exportViewModelFactory;
+        private readonly IOpponentProfilesViewModelFactory _opponentProfilesViewModelFactory;
 
         private NavigationService nav;
 
@@ -58,11 +62,9 @@ namespace TactIQ
             // DB sicherstellen
             DatabaseBuilder.Initialize();
 
-            // VM + Services zusammensetzen
+            // VMs & Services instanzieren
             _mainVM = new MainViewModel();
             DataContext = _mainVM;
-
-            _opponentRepo = new SqliteOpponentRepository();
 
             _matchRepo = new SqliteMatchRepository();
             _matchEditVmFactory = new MatchEditViewModelFactory(_matchRepo);
@@ -70,13 +72,23 @@ namespace TactIQ
             _noteRepo = new SqliteNotesRepository();
             _noteEditVmFactory = new NoteEditViewModelFactory(_noteRepo);
 
+            _opponentRepo = new SqliteOpponentRepository();
+            _profileEditVmFactory = new ProfileEditViewModelFactory(nav, _matchEditVmFactory, _noteEditVmFactory, _opponentProfilesViewModelFactory, _opponentRepo, _matchRepo, _noteRepo);
+
+            _analysisViewModelFactory = new AnalysisViewModelFactory(_matchRepo, _opponentRepo);
+            _exportViewModelFactory = new ExportViewModelFactory(_opponentRepo, _matchRepo, _noteRepo);
+
             nav = new NavigationService(vm => _mainVM.CurrentViewModel = vm);
 
+            _opponentProfilesViewModelFactory = new OpponentProfilesViewModelFactory(nav, _matchEditVmFactory, _noteEditVmFactory, _profileEditVmFactory, _opponentRepo, _matchRepo, _noteRepo, _opponentProfilesViewModelFactory);
+
             // Startseite: Gegnerliste
-            _mainVM.CurrentViewModel = new OpponentProfilesViewModel(nav,_matchEditVmFactory, _noteEditVmFactory, _opponentRepo, _matchRepo, _noteRepo);
+            var opponentVM = _opponentProfilesViewModelFactory.Create();
+            _mainVM.CurrentViewModel = opponentVM;
+
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         protected void OnPropertyChanged(string name)
         {
@@ -85,8 +97,8 @@ namespace TactIQ
 
         private void NavButton_Click(object sender, RoutedEventArgs e)
         {
-            string pageTag = (sender as Button)?.Tag.ToString();
-            LoadPage(pageTag);
+            string? pageTag = (sender as Button)?.Tag.ToString();
+            LoadPage(pageTag ?? "Gegner");
         }
 
         private void LoadPage(string page)
@@ -95,18 +107,19 @@ namespace TactIQ
             {
                 case "Gegner":
                     this.Title = "Gegnerprofile";
-                    var opponentVM = new OpponentProfilesViewModel(nav, _matchEditVmFactory, _noteEditVmFactory, _opponentRepo, _matchRepo, _noteRepo);
+                    var opponentVM = _opponentProfilesViewModelFactory.Create();
                     _mainVM.CurrentViewModel = opponentVM;
+
                     break;
                 case "Analyse":
                     this.Title = "Analyse";
-                    var analysisVM = new AnalysisViewModel(_matchRepo, _opponentRepo);
+                    var analysisVM = _analysisViewModelFactory.Create();
                     _mainVM.CurrentViewModel = analysisVM;
                     break;
                 case "Export":
                     this.Title = "Export";
-                    var vm = new ExportViewModel(_opponentRepo, _matchRepo, _noteRepo);
-                    _mainVM.CurrentViewModel = vm;
+                    var exportVM = _exportViewModelFactory.Create();
+                    _mainVM.CurrentViewModel = exportVM;
                     break;
                 case "Expand":
                     Sidebar.Width = 160;
